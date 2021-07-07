@@ -15,24 +15,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyPodcastsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
-                }
+                MyPodcastsApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+private fun MyPodcastsApp() {
+    Surface(color = MaterialTheme.colors.background) {
+        Text("my podcasts app")
+    }
 }
+
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun MyPodcastsAppPreview() {
     MyPodcastsTheme {
-        Greeting("Android")
+        MyPodcastsApp()
     }
 }
