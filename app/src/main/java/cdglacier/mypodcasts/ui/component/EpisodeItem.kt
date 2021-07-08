@@ -1,9 +1,11 @@
 package cdglacier.mypodcasts.ui.component
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -13,6 +15,21 @@ import androidx.constraintlayout.compose.ConstraintLayout
 
 @Composable
 fun LoadingEpisodeItem() {
+    val infiniteTransition = rememberInfiniteTransition()
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = keyframes {
+                durationMillis = 1000
+                0.7f at 500
+            },
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    val loadingAnimationColor = Color.Gray.copy(alpha = alpha)
+
     ConstraintLayout(
         modifier = Modifier.padding(4.dp)
     ) {
@@ -22,7 +39,7 @@ fun LoadingEpisodeItem() {
             Modifier
                 .width(100.dp)
                 .height(12.dp)
-                .background(Color.Gray)
+                .background(loadingAnimationColor)
                 .constrainAs(publishedAt) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
@@ -33,7 +50,7 @@ fun LoadingEpisodeItem() {
             Modifier
                 .width(80.dp)
                 .height(80.dp)
-                .background(Color.Gray)
+                .background(loadingAnimationColor)
                 .constrainAs(image) {
                     top.linkTo(publishedAt.bottom, margin = 4.dp)
                     start.linkTo(parent.start)
@@ -52,7 +69,7 @@ fun LoadingEpisodeItem() {
                 Modifier
                     .width(200.dp)
                     .height(32.dp)
-                    .background(Color.Gray)
+                    .background(loadingAnimationColor)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -61,7 +78,7 @@ fun LoadingEpisodeItem() {
                 Modifier
                     .width(180.dp)
                     .height(24.dp)
-                    .background(Color.Gray)
+                    .background(loadingAnimationColor)
             )
         }
 
@@ -70,7 +87,7 @@ fun LoadingEpisodeItem() {
                 .height(64.dp)
                 .width(64.dp)
                 .clip(CircleShape)
-                .background(Color.Gray)
+                .background(loadingAnimationColor)
                 .constrainAs(playButton) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
