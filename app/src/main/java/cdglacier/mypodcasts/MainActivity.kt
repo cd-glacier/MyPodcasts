@@ -44,6 +44,9 @@ private fun MyPodcastsApp() {
                     onTabSelected = { screen -> navController.navigate(screen.name) },
                     currentScreen = currentScreen
                 )
+            },
+            bottomBar = {
+                Text("TODO: PODCASTS PLAYER")
             }
         ) {
             NavHost(
