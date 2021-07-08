@@ -14,6 +14,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cdglacier.mypodcasts.ui.component.HeaderTabRow
+import cdglacier.mypodcasts.ui.home.HomeScreen
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,7 +51,7 @@ private fun MyPodcastsApp() {
                 startDestination = MyPodcastsScreen.Home.name
             ) {
                 composable(MyPodcastsScreen.Home.name) {
-                    Text(MyPodcastsScreen.Home.name)
+                    HomeScreen()
                 }
 
                 composable(MyPodcastsScreen.Podcast.name) {
