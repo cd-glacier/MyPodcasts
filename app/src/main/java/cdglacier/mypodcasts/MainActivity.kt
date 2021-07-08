@@ -57,8 +57,8 @@ private fun MyPodcastsApp() {
                     HomeScreen()
                 }
 
-                composable(MyPodcastsScreen.Podcast.name) {
-                    Text(MyPodcastsScreen.Podcast.name)
+                composable(MyPodcastsScreen.Channel.name) {
+                    Text(MyPodcastsScreen.Channel.name)
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {

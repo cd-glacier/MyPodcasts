@@ -12,7 +12,7 @@ enum class MyPodcastsScreen(
     Home(
         icon = Icons.Filled.Home,
     ),
-    Podcast(
+    Channel(
         icon = Icons.Filled.Podcasts,
     ),
     Setting(
@@ -23,7 +23,7 @@ enum class MyPodcastsScreen(
         fun fromRoute(route: String?): MyPodcastsScreen =
             when (route?.substringBefore("/")) {
                 Home.name -> Home
-                Podcast.name -> Podcast
+                Channel.name -> Channel
                 Setting.name -> Setting
                 null -> Home
                 else -> throw IllegalArgumentException("Route $route is not recognized.")
