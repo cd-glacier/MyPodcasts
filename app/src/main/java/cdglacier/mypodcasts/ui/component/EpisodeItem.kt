@@ -31,7 +31,9 @@ fun LoadingEpisodeItem() {
     val loadingAnimationColor = Color.Gray.copy(alpha = alpha)
 
     ConstraintLayout(
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
     ) {
         val (publishedAt, image, titleAndAuthor, playButton) = createRefs()
 
@@ -91,7 +93,6 @@ fun LoadingEpisodeItem() {
                 .constrainAs(playButton) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(titleAndAuthor.end, margin = 12.dp)
                     end.linkTo(parent.end)
                 }
         )
