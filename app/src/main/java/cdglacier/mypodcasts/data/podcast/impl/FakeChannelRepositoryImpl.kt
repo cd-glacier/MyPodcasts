@@ -1,6 +1,6 @@
 package cdglacier.mypodcasts.data.podcast.impl
 
-import cdglacier.mypodcasts.data.podcast.ChannelRepositery
+import cdglacier.mypodcasts.data.podcast.ChannelRepository
 import cdglacier.mypodcasts.model.Channel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -17,7 +17,7 @@ val fakeChannels = listOf<Channel>(
     )
 )
 
-class FakeChannelRepositoryImpl : ChannelRepositery {
+class FakeChannelRepositoryImpl : ChannelRepository {
     override suspend fun getSubscribedChannel(): Result<List<Channel>> =
         withContext(Dispatchers.IO) {
             delay(1500)

@@ -20,16 +20,18 @@ import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val appContainer = AppContainerImpl()
+
         setContent {
             MyPodcastsTheme {
-                MyPodcastsApp()
+                MyPodcastsApp(appContainer)
             }
         }
     }
 }
 
 @Composable
-private fun MyPodcastsApp() {
+private fun MyPodcastsApp(appContainer: AppContainer) {
     val navController = rememberNavController()
     val backstackEntry = navController.currentBackStackEntryAsState()
     val currentScreen = MyPodcastsScreen.fromRoute(
@@ -73,7 +75,9 @@ private fun MyPodcastsApp() {
 @Preview(showBackground = true)
 @Composable
 fun MyPodcastsAppPreview() {
+    val appContainer = AppContainerImpl()
+
     MyPodcastsTheme {
-        MyPodcastsApp()
+        MyPodcastsApp(appContainer)
     }
 }
