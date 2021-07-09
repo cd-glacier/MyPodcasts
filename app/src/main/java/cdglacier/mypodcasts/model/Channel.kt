@@ -5,5 +5,6 @@ data class Channel(
     val author: String,
     val imageUrl: String,
     val description: String,
+    val newFeedsUrl: String,
     val webSiteUrl: String
 )
