@@ -1,6 +1,6 @@
-package cdglacier.mypodcasts.data.podcast.impl
+package cdglacier.mypodcasts.data.channel.impl
 
-import cdglacier.mypodcasts.data.podcast.ChannelRepository
+import cdglacier.mypodcasts.data.channel.ChannelRepository
 import cdglacier.mypodcasts.model.Channel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

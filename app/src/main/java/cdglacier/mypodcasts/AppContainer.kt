@@ -1,9 +1,9 @@
 package cdglacier.mypodcasts
 
+import cdglacier.mypodcasts.data.channel.ChannelRepository
+import cdglacier.mypodcasts.data.channel.impl.FakeChannelRepositoryImpl
 import cdglacier.mypodcasts.data.episode.EpisodeRepository
 import cdglacier.mypodcasts.data.episode.FakeEpisodeRepositoryImpl
-import cdglacier.mypodcasts.data.podcast.ChannelRepository
-import cdglacier.mypodcasts.data.podcast.impl.FakeChannelRepositoryImpl
 
 interface AppContainer {
     val channelRepository: ChannelRepository

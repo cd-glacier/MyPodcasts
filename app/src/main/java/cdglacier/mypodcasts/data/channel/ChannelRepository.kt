@@ -1,4 +1,4 @@
-package cdglacier.mypodcasts.data.podcast
+package cdglacier.mypodcasts.data.channel
 
 import cdglacier.mypodcasts.model.Channel
 
