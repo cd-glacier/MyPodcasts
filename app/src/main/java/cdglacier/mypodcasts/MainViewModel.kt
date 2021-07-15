@@ -1,9 +1,6 @@
 package cdglacier.mypodcasts
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import cdglacier.mypodcasts.data.channel.ChannelRepository
 import cdglacier.mypodcasts.data.episode.EpisodeRepository
 import cdglacier.mypodcasts.model.Episode
@@ -13,11 +10,11 @@ class MainViewModel(
     private val channelRepository: ChannelRepository,
     private val episodeRepository: EpisodeRepository
 ) : ViewModel() {
-    val _latestEpisodes = MutableLiveData<List<Episode>>(listOf())
+    private val _latestEpisodes = MutableLiveData<List<Episode>>(listOf())
     val latestEpisodes: LiveData<List<Episode>>
         get() = _latestEpisodes
 
-    suspend fun refetchLatestEpisodes() {
+    fun refetchLatestEpisodes() {
         viewModelScope.launch {
             val subscribedChannels = channelRepository.getSubscribedChannel()
 
@@ -32,6 +29,16 @@ class MainViewModel(
             }
 
             _latestEpisodes.value = subscribedEpisods.getOrThrow()
+        }
+    }
+
+    class Factory(
+        private val channelRepository: ChannelRepository,
+        private val episodeRepository: EpisodeRepository
+    ) : ViewModelProvider.NewInstanceFactory() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return MainViewModel(channelRepository, episodeRepository) as T
         }
     }
 }
