@@ -4,14 +4,23 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+
+private val itemPadding = 12.dp
+private val titleAndAuthorWidth = 232.dp
 
 @Composable
 fun LoadingEpisodeItem() {
@@ -32,7 +41,7 @@ fun LoadingEpisodeItem() {
 
     ConstraintLayout(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(itemPadding)
             .fillMaxWidth()
     ) {
         val (publishedAt, image, titleAndAuthor, playButton) = createRefs()
@@ -105,19 +114,80 @@ fun LoadingEpisodeItemPreview() {
     LoadingEpisodeItem()
 }
 
-/*
 @Composable
 fun EpisodeItem(
     title: String,
     author: String,
     imageUrl: String,
-    publishedAt: String, // TODO
+    publishedAt: String,
     episodeLengthSecond: Long
 ) {
-    Column {
-        Text(text = "x days ago")
-        Row {
+    ConstraintLayout(
+        modifier = Modifier
+            .padding(itemPadding)
+            .fillMaxWidth()
+    ) {
+        val (publishedAtRef, image, titleAndAuthor, playButton) = createRefs()
 
+        Text(
+            publishedAt,
+            modifier = Modifier
+                .constrainAs(publishedAtRef) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                }
+        )
+
+        Box(
+            Modifier
+                .width(80.dp)
+                .height(80.dp)
+                .constrainAs(image) {
+                    top.linkTo(publishedAtRef.bottom, margin = 4.dp)
+                    start.linkTo(parent.start)
+                }
+        )
+
+        Column(
+            modifier = Modifier
+                .constrainAs(titleAndAuthor) {
+                    start.linkTo(image.end, margin = 12.dp)
+                    end.linkTo(playButton.start, margin = 12.dp)
+                    top.linkTo(image.top, margin = 4.dp)
+                    bottom.linkTo(parent.bottom, margin = 4.dp)
+                }
+        ) {
+            Text(
+                text = title,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.width(titleAndAuthorWidth)
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Text(
+                text = author,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.width(titleAndAuthorWidth)
+            )
+        }
+
+        IconButton(
+            onClick = {},
+            modifier = Modifier
+                .constrainAs(playButton) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    end.linkTo(parent.end)
+                }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.PlayCircle,
+                contentDescription = "play button",
+                modifier = Modifier.size(100.dp)
+            )
         }
     }
 }
@@ -126,11 +196,10 @@ fun EpisodeItem(
 @Composable
 fun EpisodeItemPreview() {
     EpisodeItem(
-        title = "MyPodcasts App is developing",
+        title = "MyPodcasts App is developing!!!!!!!!!!!!!!!!!!",
         author = "cd-glacier",
         imageUrl = "img",
         publishedAt = "xxxx",
         episodeLengthSecond = 12345
     )
 }
- */
