@@ -8,7 +8,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.LiveData
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,7 +38,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MyPodcastsTheme {
-                MyPodcastsApp(viewModel.latestEpisodes)
+                MyPodcastsApp(viewModel)
             }
         }
     }
@@ -45,13 +46,15 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun MyPodcastsApp(
-    subScribedEpisodes: LiveData<List<Episode>>
+    viewModel: MainViewModel
 ) {
     val navController = rememberNavController()
     val backstackEntry = navController.currentBackStackEntryAsState()
     val currentScreen = MyPodcastsScreen.fromRoute(
         backstackEntry.value?.destination?.route
     )
+
+    val latestEpisodes: List<Episode>? by viewModel.latestEpisodes.observeAsState(null)
 
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
@@ -71,7 +74,7 @@ private fun MyPodcastsApp(
                 startDestination = MyPodcastsScreen.Home.name
             ) {
                 composable(MyPodcastsScreen.Home.name) {
-                    HomeScreen()
+                    HomeScreen(latestEpisodes)
                 }
 
                 composable(MyPodcastsScreen.Channel.name) {

@@ -10,7 +10,7 @@ class MainViewModel(
     private val channelRepository: ChannelRepository,
     private val episodeRepository: EpisodeRepository
 ) : ViewModel() {
-    private val _latestEpisodes = MutableLiveData<List<Episode>>(listOf())
+    private val _latestEpisodes = MutableLiveData<List<Episode>>()
     val latestEpisodes: LiveData<List<Episode>>
         get() = _latestEpisodes
 
