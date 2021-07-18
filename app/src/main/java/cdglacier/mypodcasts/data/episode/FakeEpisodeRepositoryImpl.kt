@@ -32,7 +32,11 @@ val fakeEpisodes = listOf(
         publishedAt = "Sun, 27 Jun 2021 23:00:00 -0700",
         mediaUrl = "https://cache.rebuild.fm/podcast-ep309.mp3",
         lengthSecond = 62570039,
-        episodeWebSiteUrl = "https://rebuild.fm/309/"
+        episodeWebSiteUrl = "https://rebuild.fm/309/",
+        channel = Episode.Channel(
+            name = "Rebuild",
+            imageUrl = "https://cdn.rebuild.fm/images/icon240.png"
+        )
     )
 )
 

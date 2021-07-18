@@ -39,8 +39,8 @@ fun EpisodeList(episodes: List<Episode>) {
         items(episodes) {
             EpisodeItem(
                 title = it.title,
-                author = "",
-                imageUrl = it.mediaUrl,
+                channelName = it.channel.name,
+                imageUrl = it.channel.imageUrl,
                 publishedAt = it.publishedAt,
                 episodeLengthSecond = it.lengthSecond
             )

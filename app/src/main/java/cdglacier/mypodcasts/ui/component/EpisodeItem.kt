@@ -1,11 +1,13 @@
 package cdglacier.mypodcasts.ui.component
 
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayCircle
@@ -14,10 +16,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.google.accompanist.coil.rememberCoilPainter
 
 private val itemPadding = 12.dp
 private val titleAndAuthorWidth = 232.dp
@@ -117,8 +121,8 @@ fun LoadingEpisodeItemPreview() {
 @Composable
 fun EpisodeItem(
     title: String,
-    author: String,
-    imageUrl: String,
+    channelName: String,
+    imageUrl: String?,
     publishedAt: String,
     episodeLengthSecond: Long
 ) {
@@ -138,10 +142,13 @@ fun EpisodeItem(
                 }
         )
 
-        Box(
-            Modifier
-                .width(80.dp)
-                .height(80.dp)
+        Image(
+            painter = rememberCoilPainter(request = imageUrl, fadeIn = true),
+            contentScale = ContentScale.Crop,
+            contentDescription = null,
+            modifier = Modifier
+                .size(80.dp)
+                .clip(MaterialTheme.shapes.medium)
                 .constrainAs(image) {
                     top.linkTo(publishedAtRef.bottom, margin = 4.dp)
                     start.linkTo(parent.start)
@@ -167,7 +174,7 @@ fun EpisodeItem(
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = author,
+                text = channelName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.width(titleAndAuthorWidth)
@@ -197,7 +204,7 @@ fun EpisodeItem(
 fun EpisodeItemPreview() {
     EpisodeItem(
         title = "MyPodcasts App is developing!!!!!!!!!!!!!!!!!!",
-        author = "cd-glacier",
+        channelName = "cd-glacier",
         imageUrl = "img",
         publishedAt = "xxxx",
         episodeLengthSecond = 12345
