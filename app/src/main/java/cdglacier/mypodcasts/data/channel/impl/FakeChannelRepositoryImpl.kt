@@ -14,6 +14,14 @@ val fakeChannels = listOf<Channel>(
         description = "ウェブ開発、プログラミング、モバイル、ガジェットなどにフォーカスしたテクノロジー系ポッドキャストです。 #rebuildfm",
         newFeedsUrl = "https://feeds.soundcloud.com/users/soundcloud:users:280353173/sounds.rss",
         webSiteUrl = "https://rebuild.fm"
+    ),
+    Channel(
+        name = "Talking Kotlin",
+        author = null,
+        imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg",
+        description = "A bimonthly podcast that covers the Kotlin programming language by JetBrains, as well as related technologies. Hosted by Hadi Hariri",
+        newFeedsUrl = "https://feeds.soundcloud.com/users/soundcloud:users:280353173/sounds.rss",
+        webSiteUrl = "http://talkingkotlin.com"
     )
 )
 
