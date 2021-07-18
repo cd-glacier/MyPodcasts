@@ -44,6 +44,7 @@ fun EpisodeList(episodes: List<Episode>) {
                 publishedAt = it.publishedAt,
                 episodeLengthSecond = it.lengthSecond
             )
+            Divider(color = MaterialTheme.colors.background, thickness = 1.dp)
         }
     }
 }
