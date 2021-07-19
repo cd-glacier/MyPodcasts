@@ -70,7 +70,8 @@ private fun MyPodcastsApp(
                 viewModel.playingEpisode?.let {
                     EpisodePlayer(
                         imageUrl = it.channel.imageUrl,
-                        title = it.title
+                        title = it.title,
+                        mediaUrl = it.mediaUrl
                     )
                 }
             }
