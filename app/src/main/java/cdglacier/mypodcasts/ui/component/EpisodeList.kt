@@ -34,15 +34,15 @@ fun LoadingEpisodeListPreview() {
 }
 
 @Composable
-fun EpisodeList(episodes: List<Episode>) {
+fun EpisodeList(
+    episodes: List<Episode>,
+    playButtonOnClick: (Episode) -> Unit
+) {
     LazyColumn {
         items(episodes) {
             EpisodeItem(
-                title = it.title,
-                channelName = it.channel.name,
-                imageUrl = it.channel.imageUrl,
-                publishedAt = it.publishedAt,
-                episodeLengthSecond = it.lengthSecond
+                episode = it,
+                playButtonOnClick = playButtonOnClick
             )
             Divider(color = MaterialTheme.colors.background, thickness = 1.dp)
         }

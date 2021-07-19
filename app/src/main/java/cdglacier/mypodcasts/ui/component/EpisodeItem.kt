@@ -21,6 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import cdglacier.mypodcasts.model.Episode
 import com.google.accompanist.coil.rememberCoilPainter
 
 private val itemPadding = 12.dp
@@ -120,11 +121,8 @@ fun LoadingEpisodeItemPreview() {
 
 @Composable
 fun EpisodeItem(
-    title: String,
-    channelName: String,
-    imageUrl: String?,
-    publishedAt: String,
-    episodeLengthSecond: Long
+    episode: Episode,
+    playButtonOnClick: (Episode) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -134,7 +132,7 @@ fun EpisodeItem(
         val (publishedAtRef, image, titleAndAuthor, playButton) = createRefs()
 
         Text(
-            publishedAt,
+            episode.publishedAt,
             modifier = Modifier
                 .constrainAs(publishedAtRef) {
                     top.linkTo(parent.top)
@@ -143,7 +141,7 @@ fun EpisodeItem(
         )
 
         Image(
-            painter = rememberCoilPainter(request = imageUrl, fadeIn = true),
+            painter = rememberCoilPainter(request = episode.channel.imageUrl, fadeIn = true),
             contentScale = ContentScale.Crop,
             contentDescription = null,
             modifier = Modifier
@@ -165,7 +163,7 @@ fun EpisodeItem(
                 }
         ) {
             Text(
-                text = title,
+                text = episode.title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.width(titleAndAuthorWidth)
@@ -174,7 +172,7 @@ fun EpisodeItem(
             Spacer(modifier = Modifier.height(10.dp))
 
             Text(
-                text = channelName,
+                text = episode.channel.name,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.width(titleAndAuthorWidth)
@@ -182,7 +180,7 @@ fun EpisodeItem(
         }
 
         IconButton(
-            onClick = {},
+            onClick = { playButtonOnClick(episode) },
             modifier = Modifier
                 .constrainAs(playButton) {
                     top.linkTo(parent.top)
@@ -203,10 +201,18 @@ fun EpisodeItem(
 @Composable
 fun EpisodeItemPreview() {
     EpisodeItem(
-        title = "MyPodcasts App is developing!!!!!!!!!!!!!!!!!!",
-        channelName = "cd-glacier",
-        imageUrl = "img",
-        publishedAt = "xxxx",
-        episodeLengthSecond = 12345
+        episode = Episode(
+            title = "Kotlin in Education (Talking Kotlin #101)",
+            description = "In this episode, we’ll sit down with Ksenia Shneyveys, the Kotlin Manager for Education and University Relations at JetBrains, and talk to her about the current state and future of Kotlin in academia. Kseniya will tell us about the recent increase in institutions and educators teaching Kotlin, including adoption by Stanford, Cambridge, Imperial College London, University of Chicago, and many other prestigious institutions.",
+            publishedAt = "Sat, 17 Jul 2021 13:45:00 +0000",
+            mediaUrl = "https://feeds.soundcloud.com/stream/1088610637-user-38099918-kotlin-in-education-talking-kotlin-101.mp3",
+            lengthSecond = 30439966,
+            episodeWebSiteUrl = null,
+            channel = Episode.Channel(
+                name = "Talking Kotlin",
+                imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg"
+            )
+        ),
+        playButtonOnClick = {}
     )
 }

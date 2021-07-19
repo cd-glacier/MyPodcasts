@@ -80,7 +80,10 @@ private fun MyPodcastsApp(
                 startDestination = MyPodcastsScreen.Home.name
             ) {
                 composable(MyPodcastsScreen.Home.name) {
-                    HomeScreen(latestEpisodes)
+                    HomeScreen(
+                        latestEpisodes = latestEpisodes,
+                        playButtonOnClick = { viewModel.updatePlayingEpisode(it) }
+                    )
                 }
 
                 composable(MyPodcastsScreen.Channel.name) {
