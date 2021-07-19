@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -15,7 +16,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.accompanist.coil.rememberCoilPainter
 
@@ -46,14 +46,15 @@ fun EpisodePlayer(
 
         Text(
             text = title,
-            fontSize = 24.sp,
-            maxLines = 1,
+            maxLines = 2,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
+                .width(220.dp)
                 .constrainAs(titleRef) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(imageRef.end, margin = 12.dp)
+                    start.linkTo(imageRef.end, margin = 18.dp)
+                    end.linkTo(playButtonRef.start, 18.dp)
                 }
         )
 
@@ -80,6 +81,6 @@ fun EpisodePlayer(
 fun EpisodePlayerPreview() {
     EpisodePlayer(
         imageUrl = null,
-        title = "playing episode title"
+        title = "playing episode title!!!!!!!!!!!!!"
     )
 }

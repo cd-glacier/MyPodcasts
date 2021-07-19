@@ -55,7 +55,7 @@ val fakeEpisodes = listOf(
 class FakeEpisodeRepositoryImpl : EpisodeRepository {
     override suspend fun getEpisodes(channel: Channel): Result<List<Episode>> =
         withContext(Dispatchers.IO) {
-            delay(1000)
+            delay(500)
             if (channel.webSiteUrl == "https://rebuild.fm") {
                 Result.success(fakeEpisodes)
             } else {
