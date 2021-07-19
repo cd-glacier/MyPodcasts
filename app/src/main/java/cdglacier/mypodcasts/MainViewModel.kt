@@ -1,5 +1,7 @@
 package cdglacier.mypodcasts
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import cdglacier.mypodcasts.data.channel.ChannelRepository
 import cdglacier.mypodcasts.data.episode.EpisodeRepository
@@ -10,6 +12,10 @@ class MainViewModel(
     private val channelRepository: ChannelRepository,
     private val episodeRepository: EpisodeRepository
 ) : ViewModel() {
+    private val _playingEpisode by mutableStateOf<Episode?>(null)
+    val playingEpisode: Episode?
+        get() = _playingEpisode
+
     private val _latestEpisodes = MutableLiveData<List<Episode>>()
     val latestEpisodes: LiveData<List<Episode>>
         get() = _latestEpisodes

@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import cdglacier.mypodcasts.data.channel.impl.FakeChannelRepositoryImpl
 import cdglacier.mypodcasts.data.episode.FakeEpisodeRepositoryImpl
 import cdglacier.mypodcasts.model.Episode
+import cdglacier.mypodcasts.ui.component.EpisodePlayer
 import cdglacier.mypodcasts.ui.component.HeaderTabRow
 import cdglacier.mypodcasts.ui.home.HomeScreen
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
@@ -66,7 +67,12 @@ private fun MyPodcastsApp(
                 )
             },
             bottomBar = {
-                Text("TODO: PODCASTS PLAYER")
+                viewModel.playingEpisode?.let {
+                    EpisodePlayer(
+                        imageUrl = it.channel.imageUrl,
+                        title = it.title
+                    )
+                }
             }
         ) {
             NavHost(
