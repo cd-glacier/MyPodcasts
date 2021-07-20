@@ -15,7 +15,6 @@ import cdglacier.mypodcasts.databinding.ExoPlayerRootBinding
 import com.google.accompanist.coil.rememberCoilPainter
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ui.PlayerView.SHOW_BUFFERING_ALWAYS
 
 @Composable
 fun EpisodePlayer(
@@ -61,7 +60,7 @@ fun EpisodePlayer(
             modifier = Modifier
                 .size(80.dp)
                 .constrainAs(imageRef) {
-                    top.linkTo(parent.top, 12.dp)
+                    top.linkTo(parent.top, 24.dp)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                 }
@@ -74,7 +73,7 @@ fun EpisodePlayer(
             modifier = Modifier
                 .width(220.dp)
                 .constrainAs(titleRef) {
-                    top.linkTo(parent.top, 12.dp)
+                    top.linkTo(parent.top, 24.dp)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(imageRef.end, margin = 18.dp)
                     end.linkTo(parent.end, 40.dp)
