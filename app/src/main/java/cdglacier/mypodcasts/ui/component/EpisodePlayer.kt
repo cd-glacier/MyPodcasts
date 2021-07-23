@@ -51,6 +51,7 @@ fun EpisodePlayer(
             this.player.apply {
                 player = exoPlayer
             }
+            //TODO: release
         }
 
         Image(
