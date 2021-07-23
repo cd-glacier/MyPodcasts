@@ -62,6 +62,13 @@ fun EpisodeList(
                     .fillMaxWidth()
                     .padding(12.dp)
             )
+
+            Divider(
+                color = MaterialTheme.colors.background,
+                thickness = 1.dp,
+                startIndent = 8.dp
+            )
+
             LazyColumn {
                 items(episodes) {
                     EpisodeItem(
