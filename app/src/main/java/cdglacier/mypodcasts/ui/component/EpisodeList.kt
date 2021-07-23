@@ -13,7 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import cdglacier.mypodcasts.data.episode.fakeEpisodes
 import cdglacier.mypodcasts.model.Episode
+import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 
 @Composable
 fun LoadingEpisodeList() {
@@ -37,12 +39,6 @@ fun LoadingEpisodeList() {
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun LoadingEpisodeListPreview() {
-    LoadingEpisodeList()
 }
 
 @Composable
@@ -69,5 +65,13 @@ fun EpisodeList(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun EpisodeListPreview() {
+    MyPodcastsTheme(darkTheme = true) {
+        EpisodeList(episodes = fakeEpisodes, playButtonOnClick = {})
     }
 }
