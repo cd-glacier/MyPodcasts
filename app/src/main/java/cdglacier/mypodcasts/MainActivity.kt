@@ -3,6 +3,13 @@ package cdglacier.mypodcasts
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
@@ -45,6 +52,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun MyPodcastsApp(
     viewModel: MainViewModel
@@ -67,12 +75,24 @@ private fun MyPodcastsApp(
                 )
             },
             bottomBar = {
-                viewModel.playingEpisode?.let {
-                    EpisodePlayer(
-                        imageUrl = it.channel.imageUrl,
-                        title = it.title,
-                        mediaUrl = it.mediaUrl
+                AnimatedVisibility(
+                    visible = viewModel.playingEpisode != null,
+                    enter = slideInVertically(
+                        initialOffsetY = { fullHeight -> fullHeight },
+                        animationSpec = tween(durationMillis = 150, easing = LinearOutSlowInEasing)
+                    ),
+                    exit = slideOutVertically(
+                        targetOffsetY = { fullHeight -> fullHeight },
+                        animationSpec = tween(durationMillis = 250, easing = FastOutLinearInEasing)
                     )
+                ) {
+                    viewModel.playingEpisode?.let {
+                        EpisodePlayer(
+                            imageUrl = it.channel.imageUrl,
+                            title = it.title,
+                            mediaUrl = it.mediaUrl
+                        )
+                    }
                 }
             }
         ) {
