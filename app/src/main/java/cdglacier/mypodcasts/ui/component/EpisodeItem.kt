@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,7 +26,7 @@ import cdglacier.mypodcasts.model.Episode
 import com.google.accompanist.coil.rememberCoilPainter
 
 private val itemPadding = 12.dp
-private val titleAndAuthorWidth = 232.dp
+private val titleAndAuthorWidth = 220.dp
 
 @Composable
 fun LoadingEpisodeItem() {
@@ -166,7 +167,8 @@ fun EpisodeItem(
                 text = episode.title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.width(titleAndAuthorWidth)
+                modifier = Modifier.width(titleAndAuthorWidth),
+                fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(10.dp))

@@ -8,6 +8,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidViewBinding
@@ -87,7 +88,8 @@ fun EpisodePlayer(
                     bottom.linkTo(parent.bottom)
                     start.linkTo(imageRef.end, margin = 18.dp)
                     end.linkTo(parent.end, 40.dp)
-                }
+                },
+            fontWeight = FontWeight.Bold
         )
     }
 }
