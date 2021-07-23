@@ -72,7 +72,7 @@ fun EpisodePlayer(
                 .constrainAs(imageRef) {
                     top.linkTo(parent.top, 24.dp)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
+                    start.linkTo(parent.start, 4.dp)
                 }
         )
 
