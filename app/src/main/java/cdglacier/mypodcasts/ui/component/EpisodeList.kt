@@ -9,8 +9,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cdglacier.mypodcasts.data.episode.fakeEpisodes
@@ -52,17 +54,26 @@ fun EpisodeList(
             .background(MaterialTheme.colors.surface)
             .padding(4.dp)
     ) {
-        LazyColumn {
-            items(episodes) {
-                EpisodeItem(
-                    episode = it,
-                    playButtonOnClick = playButtonOnClick
-                )
-                Divider(
-                    color = MaterialTheme.colors.background,
-                    thickness = 1.dp,
-                    startIndent = 8.dp
-                )
+        Column() {
+            Text(
+                text = "Latest Episodes",
+                style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+            )
+            LazyColumn {
+                items(episodes) {
+                    EpisodeItem(
+                        episode = it,
+                        playButtonOnClick = playButtonOnClick
+                    )
+                    Divider(
+                        color = MaterialTheme.colors.background,
+                        thickness = 1.dp,
+                        startIndent = 8.dp
+                    )
+                }
             }
         }
     }
