@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -36,22 +37,30 @@ fun EpisodePlayer(
     ) {
         val (imageRef, titleRef, playerRef) = createRefs()
 
-        AndroidViewBinding(
-            factory = ExoPlayerRootBinding::inflate,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .constrainAs(playerRef) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
+        DisposableEffect(
+            AndroidViewBinding(
+                factory = ExoPlayerRootBinding::inflate,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .constrainAs(playerRef) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+            ) {
+                this.player.apply {
+                    player = exoPlayer
                 }
-        ) {
-            this.player.apply {
-                player = exoPlayer
             }
-            //TODO: release
+        ) {
+            onDispose {
+                exoPlayer.run {
+                    pause()
+                    release()
+                }
+            }
         }
 
         Image(
