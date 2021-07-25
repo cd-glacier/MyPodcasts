@@ -7,9 +7,12 @@ import androidx.lifecycle.*
 import cdglacier.mypodcasts.data.channel.ChannelRepository
 import cdglacier.mypodcasts.data.episode.EpisodeRepository
 import cdglacier.mypodcasts.model.Episode
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import kotlinx.coroutines.launch
 
 class MainViewModel(
+    val exoPlayer: ExoPlayer,
     private val channelRepository: ChannelRepository,
     private val episodeRepository: EpisodeRepository
 ) : ViewModel() {
@@ -23,13 +26,20 @@ class MainViewModel(
 
     fun updatePlayingEpisode(episode: Episode) {
         _playingEpisode = episode
+
+        val mediaItem = MediaItem.fromUri(episode.mediaUrl)
+        exoPlayer.apply {
+            setMediaItem(mediaItem)
+            prepare()
+            playWhenReady = true
+        }
     }
 
     fun refetchLatestEpisodes() {
         viewModelScope.launch {
             val subscribedChannels = channelRepository.getSubscribedChannel()
 
-            val subscribedEpisods = subscribedChannels.map { channels ->
+            val subscribedEpisodes = subscribedChannels.map { channels ->
                 channels
                     .map {
                         episodeRepository.getEpisodes(it).getOrNull()
@@ -39,17 +49,25 @@ class MainViewModel(
                     .sortedBy { it.publishedAt }
             }
 
-            _latestEpisodes.value = subscribedEpisods.getOrThrow()
+            _latestEpisodes.value = subscribedEpisodes.getOrThrow()
+        }
+    }
+
+    fun invalidate() {
+        exoPlayer.apply {
+            pause()
+            release()
         }
     }
 
     class Factory(
+        private val exoPlayer: ExoPlayer,
         private val channelRepository: ChannelRepository,
         private val episodeRepository: EpisodeRepository
     ) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return MainViewModel(channelRepository, episodeRepository) as T
+            return MainViewModel(exoPlayer, channelRepository, episodeRepository) as T
         }
     }
 }

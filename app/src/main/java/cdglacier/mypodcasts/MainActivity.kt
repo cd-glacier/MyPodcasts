@@ -29,19 +29,25 @@ import cdglacier.mypodcasts.ui.component.EpisodePlayer
 import cdglacier.mypodcasts.ui.component.HeaderTabRow
 import cdglacier.mypodcasts.ui.home.HomeScreen
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.SimpleExoPlayer
 
 class MainActivity : ComponentActivity() {
+    private val exoPlayer: ExoPlayer by lazy {
+        SimpleExoPlayer.Builder(this).build()
+    }
+
     private val viewModel: MainViewModel by lazy {
         val channelRepository = FakeChannelRepositoryImpl()
         val episodeRepository = FakeEpisodeRepositoryImpl()
 
-        val factory = MainViewModel.Factory(channelRepository, episodeRepository)
+        val factory = MainViewModel.Factory(exoPlayer, channelRepository, episodeRepository)
         ViewModelProvider(this, factory)[MainViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+       
         viewModel.refetchLatestEpisodes()
 
         setContent {
@@ -49,6 +55,12 @@ class MainActivity : ComponentActivity() {
                 MyPodcastsApp(viewModel)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        viewModel.invalidate()
     }
 }
 
@@ -90,7 +102,7 @@ private fun MyPodcastsApp(
                         EpisodePlayer(
                             imageUrl = it.channel.imageUrl,
                             title = it.title,
-                            mediaUrl = it.mediaUrl
+                            exoPlayer = viewModel.exoPlayer
                         )
                     }
                 }

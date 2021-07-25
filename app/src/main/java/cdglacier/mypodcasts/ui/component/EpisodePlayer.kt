@@ -4,10 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -15,22 +13,14 @@ import androidx.compose.ui.viewinterop.AndroidViewBinding
 import androidx.constraintlayout.compose.ConstraintLayout
 import cdglacier.mypodcasts.databinding.ExoPlayerRootBinding
 import com.google.accompanist.coil.rememberCoilPainter
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.ExoPlayer
 
 @Composable
 fun EpisodePlayer(
     imageUrl: String?,
     title: String,
-    mediaUrl: String
+    exoPlayer: ExoPlayer
 ) {
-    val context = LocalContext.current
-    val mediaItem = MediaItem.fromUri(mediaUrl)
-    val exoPlayer = SimpleExoPlayer.Builder(context).build().apply {
-        setMediaItem(mediaItem)
-        prepare()
-        playWhenReady = true
-    }
     ConstraintLayout(
         modifier = Modifier
             .padding(12.dp)
@@ -38,29 +28,20 @@ fun EpisodePlayer(
     ) {
         val (imageRef, titleRef, playerRef) = createRefs()
 
-        DisposableEffect(
-            AndroidViewBinding(
-                factory = ExoPlayerRootBinding::inflate,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .constrainAs(playerRef) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            ) {
-                this.player.apply {
-                    player = exoPlayer
+        AndroidViewBinding(
+            factory = ExoPlayerRootBinding::inflate,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+                .constrainAs(playerRef) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
                 }
-            }
         ) {
-            onDispose {
-                exoPlayer.run {
-                    pause()
-                    release()
-                }
+            this.player.apply {
+                player = exoPlayer
             }
         }
 
