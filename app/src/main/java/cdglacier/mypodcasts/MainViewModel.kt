@@ -35,6 +35,14 @@ class MainViewModel(
         }
     }
 
+    fun clearPlayer() {
+        _playingEpisode = null
+
+        exoPlayer.apply {
+            clearMediaItems()
+        }
+    }
+
     fun refetchLatestEpisodes() {
         viewModelScope.launch {
             val subscribedChannels = channelRepository.getSubscribedChannel()
@@ -54,8 +62,11 @@ class MainViewModel(
     }
 
     fun invalidate() {
+        _playingEpisode = null
+
         exoPlayer.apply {
             pause()
+            clearMediaItems()
             release()
         }
     }

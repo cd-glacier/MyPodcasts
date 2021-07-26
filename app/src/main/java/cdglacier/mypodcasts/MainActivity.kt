@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       
+
         viewModel.refetchLatestEpisodes()
 
         setContent {
@@ -102,7 +102,8 @@ private fun MyPodcastsApp(
                         EpisodePlayer(
                             imageUrl = it.channel.imageUrl,
                             title = it.title,
-                            exoPlayer = viewModel.exoPlayer
+                            exoPlayer = viewModel.exoPlayer,
+                            onDismissed = { viewModel.clearPlayer() }
                         )
                     }
                 }
