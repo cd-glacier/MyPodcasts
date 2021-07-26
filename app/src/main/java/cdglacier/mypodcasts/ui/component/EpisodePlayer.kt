@@ -54,7 +54,7 @@ fun EpisodePlayer(
             AndroidViewBinding(
                 factory = ExoPlayerRootBinding::inflate,
                 modifier = Modifier
-                    .height(100.dp)
+                    .height(110.dp)
                     .constrainAs(playerRef) {
                         top.linkTo(parent.top)
                         bottom.linkTo(parent.bottom)
@@ -74,8 +74,8 @@ fun EpisodePlayer(
                 modifier = Modifier
                     .size(80.dp)
                     .constrainAs(imageRef) {
-                        top.linkTo(parent.top, 24.dp)
-                        bottom.linkTo(parent.bottom)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom, 20.dp)
                         start.linkTo(parent.start, 4.dp)
                     }
             )
@@ -87,8 +87,8 @@ fun EpisodePlayer(
                 modifier = Modifier
                     .width(220.dp)
                     .constrainAs(titleRef) {
-                        top.linkTo(parent.top, 24.dp)
-                        bottom.linkTo(parent.bottom)
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom, 24.dp)
                         start.linkTo(imageRef.end, margin = 18.dp)
                         end.linkTo(parent.end, 40.dp)
                     },
