@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.*
 import cdglacier.mypodcasts.data.channel.ChannelRepository
 import cdglacier.mypodcasts.data.episode.EpisodeRepository
+import cdglacier.mypodcasts.model.Channel
 import cdglacier.mypodcasts.model.Episode
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -23,6 +24,10 @@ class MainViewModel(
     private val _latestEpisodes = MutableLiveData<List<Episode>>()
     val latestEpisodes: LiveData<List<Episode>>
         get() = _latestEpisodes
+
+    private val _subscribedChannels = MutableLiveData<List<Channel>>()
+    val subscribedChannels: LiveData<List<Channel>>
+        get() = _subscribedChannels
 
     fun updatePlayingEpisode(episode: Episode) {
         _playingEpisode = episode
@@ -58,6 +63,12 @@ class MainViewModel(
             }
 
             _latestEpisodes.value = subscribedEpisodes.getOrThrow()
+        }
+    }
+
+    fun refetchSubscribedChannels() {
+        viewModelScope.launch {
+            _subscribedChannels.value = channelRepository.getSubscribedChannel().getOrThrow()
         }
     }
 

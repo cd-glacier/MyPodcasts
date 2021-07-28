@@ -24,6 +24,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import cdglacier.mypodcasts.data.channel.impl.FakeChannelRepositoryImpl
 import cdglacier.mypodcasts.data.episode.FakeEpisodeRepositoryImpl
+import cdglacier.mypodcasts.model.Channel
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.channel.ChannelScreen
 import cdglacier.mypodcasts.ui.component.EpisodePlayer
@@ -50,6 +51,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         viewModel.refetchLatestEpisodes()
+        viewModel.refetchSubscribedChannels()
 
         setContent {
             MyPodcastsTheme {
@@ -77,6 +79,7 @@ private fun MyPodcastsApp(
     )
 
     val latestEpisodes: List<Episode>? by viewModel.latestEpisodes.observeAsState(null)
+    val subscribedChannels: List<Channel>? by viewModel.subscribedChannels.observeAsState(null)
 
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
@@ -122,7 +125,9 @@ private fun MyPodcastsApp(
                 }
 
                 composable(MyPodcastsScreen.Channel.name) {
-                    ChannelScreen()
+                    ChannelScreen(
+                        subscribedChannel = subscribedChannels
+                    )
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {

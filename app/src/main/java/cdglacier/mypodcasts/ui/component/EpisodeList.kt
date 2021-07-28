@@ -65,7 +65,7 @@ fun EpisodeList(
 
             Divider(
                 color = MaterialTheme.colors.background,
-                thickness = 1.dp,
+                thickness = 2.dp,
                 startIndent = 8.dp
             )
 
