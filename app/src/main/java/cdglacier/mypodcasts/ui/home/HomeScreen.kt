@@ -13,7 +13,8 @@ import cdglacier.mypodcasts.ui.component.LoadingEpisodeList
 @Composable
 fun HomeScreen(
     latestEpisodes: List<Episode>?,
-    playButtonOnClick: (Episode) -> Unit
+    playButtonOnClick: (Episode) -> Unit,
+    titleOnClick: (Episode.Channel) -> Unit
 ) {
     when {
         latestEpisodes == null -> {
@@ -25,7 +26,8 @@ fun HomeScreen(
         else -> {
             EpisodeList(
                 episodes = latestEpisodes,
-                playButtonOnClick = playButtonOnClick
+                playButtonOnClick = playButtonOnClick,
+                titleOnClick = titleOnClick
             )
         }
     }
@@ -36,6 +38,7 @@ fun HomeScreen(
 private fun HomeScreenLoadingPreview() {
     HomeScreen(
         latestEpisodes = null,
-        playButtonOnClick = {}
+        playButtonOnClick = {},
+        titleOnClick = {}
     )
 }

@@ -46,7 +46,8 @@ fun LoadingEpisodeList() {
 @Composable
 fun EpisodeList(
     episodes: List<Episode>,
-    playButtonOnClick: (Episode) -> Unit
+    playButtonOnClick: (Episode) -> Unit,
+    titleOnClick: (Episode.Channel) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -73,7 +74,8 @@ fun EpisodeList(
                 items(episodes) {
                     EpisodeItem(
                         episode = it,
-                        playButtonOnClick = playButtonOnClick
+                        playButtonOnClick = playButtonOnClick,
+                        titleOnClick = titleOnClick
                     )
                     Divider(
                         color = MaterialTheme.colors.background,
@@ -90,6 +92,10 @@ fun EpisodeList(
 @Composable
 fun EpisodeListPreview() {
     MyPodcastsTheme(darkTheme = true) {
-        EpisodeList(episodes = fakeEpisodes, playButtonOnClick = {})
+        EpisodeList(
+            episodes = fakeEpisodes,
+            playButtonOnClick = {},
+            titleOnClick = {}
+        )
     }
 }

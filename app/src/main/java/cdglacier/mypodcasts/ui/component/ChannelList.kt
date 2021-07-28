@@ -20,7 +20,8 @@ import cdglacier.mypodcasts.model.Channel
 
 @Composable
 fun ChannelList(
-    channels: List<Channel>?
+    channels: List<Channel>?,
+    channelOnClick: (Channel) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -53,7 +54,10 @@ fun ChannelList(
                 else -> {
                     LazyColumn {
                         items(items = channels) { item ->
-                            ChannelItem(channel = item)
+                            ChannelItem(
+                                channel = item,
+                                onClick = channelOnClick
+                            )
 
                             Divider(
                                 color = MaterialTheme.colors.background,
@@ -71,5 +75,5 @@ fun ChannelList(
 @Preview
 @Composable
 fun ChannelListPreview() {
-    ChannelList(fakeChannels)
+    ChannelList(fakeChannels) {}
 }

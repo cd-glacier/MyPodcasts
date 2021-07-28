@@ -8,15 +8,20 @@ import cdglacier.mypodcasts.ui.component.ChannelList
 
 @Composable
 fun ChannelScreen(
-    subscribedChannel: List<Channel>?
+    subscribedChannel: List<Channel>?,
+    channelOnClick: (Channel) -> Unit
 ) {
-    ChannelList(channels = subscribedChannel)
+    ChannelList(
+        channels = subscribedChannel,
+        channelOnClick = channelOnClick
+    )
 }
 
 @Preview
 @Composable
 fun ChannelScreenPreview() {
     ChannelScreen(
-        subscribedChannel = fakeChannels
+        subscribedChannel = fakeChannels,
+        channelOnClick = {}
     )
 }

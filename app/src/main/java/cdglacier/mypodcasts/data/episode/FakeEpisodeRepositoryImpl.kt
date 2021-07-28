@@ -15,6 +15,7 @@ val fakeEpisodes = listOf(
         lengthSecond = 30439966,
         episodeWebSiteUrl = null,
         channel = Episode.Channel(
+            domain = "talkingkotlin.com",
             name = "Talking Kotlin",
             imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg"
         )
@@ -46,6 +47,7 @@ val fakeEpisodes = listOf(
         lengthSecond = 62570039,
         episodeWebSiteUrl = "https://rebuild.fm/309/",
         channel = Episode.Channel(
+            domain = "rebuild.fm",
             name = "Rebuild",
             imageUrl = "https://cdn.rebuild.fm/images/icon240.png"
         )

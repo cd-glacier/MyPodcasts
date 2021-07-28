@@ -3,6 +3,7 @@ package cdglacier.mypodcasts.ui.component
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
@@ -122,7 +123,8 @@ fun LoadingEpisodeItemPreview() {
 @Composable
 fun EpisodeItem(
     episode: Episode,
-    playButtonOnClick: (Episode) -> Unit
+    playButtonOnClick: (Episode) -> Unit,
+    titleOnClick: (Episode.Channel) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -177,8 +179,10 @@ fun EpisodeItem(
                 text = episode.channel.name,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.width(titleAndAuthorWidth),
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier
+                    .width(titleAndAuthorWidth)
+                    .clickable { titleOnClick(episode.channel) }
             )
         }
 
@@ -212,10 +216,12 @@ fun EpisodeItemPreview() {
             lengthSecond = 30439966,
             episodeWebSiteUrl = null,
             channel = Episode.Channel(
+                domain = "http://talkingkotlin.com",
                 name = "Talking Kotlin",
-                imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg"
+                imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg",
             )
         ),
-        playButtonOnClick = {}
+        playButtonOnClick = {},
+        titleOnClick = {}
     )
 }

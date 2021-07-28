@@ -119,20 +119,22 @@ private fun MyPodcastsApp(
                 composable(MyPodcastsScreen.Home.name) {
                     HomeScreen(
                         latestEpisodes = latestEpisodes,
-                        playButtonOnClick = { viewModel.updatePlayingEpisode(it) }
+                        playButtonOnClick = { viewModel.updatePlayingEpisode(it) },
+                        titleOnClick = { channel -> navController.navigate("${MyPodcastsScreen.Channel.name}/${channel.domain}") }
                     )
                 }
 
                 composable(MyPodcastsScreen.Channel.name) {
                     ChannelScreen(
-                        subscribedChannel = subscribedChannels
+                        subscribedChannel = subscribedChannels,
+                        channelOnClick = { channel -> navController.navigate("${MyPodcastsScreen.Channel.name}/${channel.domain}") }
                     )
                 }
 
                 composable(
-                    route = "${MyPodcastsScreen.Channel.name}}/{channelWebSiteUrl}",
+                    route = "${MyPodcastsScreen.Channel.name}/{domain}",
                     arguments = listOf(
-                        navArgument("channelWebSiteUrl") {
+                        navArgument("domain") {
                             type = NavType.StringType
                         }
                     )

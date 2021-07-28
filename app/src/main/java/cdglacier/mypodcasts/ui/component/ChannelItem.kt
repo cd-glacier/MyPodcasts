@@ -1,6 +1,7 @@
 package cdglacier.mypodcasts.ui.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,12 +17,14 @@ import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
 fun ChannelItem(
-    channel: Channel
+    channel: Channel,
+    onClick: (Channel) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
+            .clickable { onClick(channel) }
     ) {
         val (imageRef, nameAndAuthorRef) = createRefs()
 
@@ -73,6 +76,7 @@ fun ChannelItem(
 fun ChannelItemPreview() {
     ChannelItem(
         Channel(
+            domain = "rebuild.fm",
             name = "Rebuild",
             author = "Tatsuhiko Miyagawa",
             imageUrl = "https://cdn.rebuild.fm/images/icon240.png",
@@ -80,5 +84,6 @@ fun ChannelItemPreview() {
             newFeedsUrl = "https://feeds.soundcloud.com/users/soundcloud:users:280353173/sounds.rss",
             webSiteUrl = "https://rebuild.fm"
         ),
+        onClick = {}
     )
 }

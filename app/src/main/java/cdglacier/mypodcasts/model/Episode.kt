@@ -11,6 +11,7 @@ data class Episode(
     val channel: Channel
 ) {
     data class Channel(
+        val domain: String,
         val name: String,
         val imageUrl: String?,
     )
