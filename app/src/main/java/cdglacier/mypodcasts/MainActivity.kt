@@ -25,6 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import cdglacier.mypodcasts.data.channel.impl.FakeChannelRepositoryImpl
 import cdglacier.mypodcasts.data.episode.FakeEpisodeRepositoryImpl
 import cdglacier.mypodcasts.model.Episode
+import cdglacier.mypodcasts.ui.channel.ChannelScreen
 import cdglacier.mypodcasts.ui.component.EpisodePlayer
 import cdglacier.mypodcasts.ui.component.HeaderTabRow
 import cdglacier.mypodcasts.ui.home.HomeScreen
@@ -121,7 +122,7 @@ private fun MyPodcastsApp(
                 }
 
                 composable(MyPodcastsScreen.Channel.name) {
-                    Text(MyPodcastsScreen.Channel.name)
+                    ChannelScreen()
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {
