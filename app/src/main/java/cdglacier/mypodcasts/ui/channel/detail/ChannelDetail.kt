@@ -6,7 +6,7 @@ import cdglacier.mypodcasts.model.Channel
 
 @Composable
 fun ChannelDetail(
-    channel: Channel
+    channel: Channel?
 ) {
-    Text(text = "Channel Detail: ${channel.name}")
+    Text(text = "Channel Detail: ${channel?.name}")
 }

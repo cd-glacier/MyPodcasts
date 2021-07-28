@@ -139,7 +139,12 @@ private fun MyPodcastsApp(
                         }
                     )
                 ) { entry ->
-                    subscribedChannels?.let { it -> ChannelDetail(channel = it.first()) }
+                    val domain = entry.arguments?.getString("domain")
+                    domain?.let {
+                        viewModel.fetchChannelDetail(it)
+                    }
+
+                    ChannelDetail(channel = viewModel.channelDetail)
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {

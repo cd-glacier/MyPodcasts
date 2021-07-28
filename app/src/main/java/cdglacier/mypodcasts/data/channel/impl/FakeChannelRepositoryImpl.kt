@@ -31,4 +31,14 @@ class FakeChannelRepositoryImpl : ChannelRepository {
         withContext(Dispatchers.IO) {
             Result.success(fakeChannels)
         }
+
+    override suspend fun getChannel(domain: String): Result<Channel> =
+        withContext(Dispatchers.IO) {
+            val channel = fakeChannels.find { it.domain == domain }
+            if (channel == null) {
+                Result.failure(Throwable("channel not found"))
+            } else {
+                Result.success(channel)
+            }
+        }
 }
