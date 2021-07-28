@@ -46,7 +46,7 @@ fun ChannelItem(
                 .constrainAs(nameAndAuthorRef) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(imageRef.end, 4.dp)
+                    start.linkTo(imageRef.end, 12.dp)
                 }
         ) {
             Text(
