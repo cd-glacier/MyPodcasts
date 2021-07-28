@@ -18,15 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.*
 import cdglacier.mypodcasts.data.channel.impl.FakeChannelRepositoryImpl
 import cdglacier.mypodcasts.data.episode.FakeEpisodeRepositoryImpl
 import cdglacier.mypodcasts.model.Channel
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.channel.ChannelScreen
+import cdglacier.mypodcasts.ui.channel.detail.ChannelDetail
 import cdglacier.mypodcasts.ui.component.EpisodePlayer
 import cdglacier.mypodcasts.ui.component.HeaderTabRow
 import cdglacier.mypodcasts.ui.home.HomeScreen
@@ -128,6 +127,17 @@ private fun MyPodcastsApp(
                     ChannelScreen(
                         subscribedChannel = subscribedChannels
                     )
+                }
+
+                composable(
+                    route = "${MyPodcastsScreen.Channel.name}}/{channelWebSiteUrl}",
+                    arguments = listOf(
+                        navArgument("channelWebSiteUrl") {
+                            type = NavType.StringType
+                        }
+                    )
+                ) { entry ->
+                    subscribedChannels?.let { it -> ChannelDetail(channel = it.first()) }
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {
