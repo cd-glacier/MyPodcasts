@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cdglacier.mypodcasts.data.channel.impl.fakeChannels
 import cdglacier.mypodcasts.model.Channel
+import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 
 @Composable
 fun ChannelList(
@@ -32,7 +33,7 @@ fun ChannelList(
         Column() {
             Text(
                 text = "Subscribed Channels",
-                style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(12.dp)
@@ -75,5 +76,7 @@ fun ChannelList(
 @Preview
 @Composable
 fun ChannelListPreview() {
-    ChannelList(fakeChannels) {}
+    MyPodcastsTheme {
+        ChannelList(fakeChannels) {}
+    }
 }

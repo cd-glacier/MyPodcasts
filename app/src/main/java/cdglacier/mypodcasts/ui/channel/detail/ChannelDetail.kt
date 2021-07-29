@@ -36,7 +36,7 @@ fun ChannelDetail(
             Column {
                 Text(
                     text = chan.name,
-                    style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp)

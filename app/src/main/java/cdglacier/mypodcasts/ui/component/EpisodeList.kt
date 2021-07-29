@@ -58,7 +58,7 @@ fun EpisodeList(
         Column() {
             Text(
                 text = "Latest Episodes",
-                style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
+                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(12.dp)
