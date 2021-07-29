@@ -6,20 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-val fakeEpisodes = listOf(
-    Episode(
-        title = "Kotlin in Education (Talking Kotlin #101)",
-        description = "In this episode, we’ll sit down with Ksenia Shneyveys, the Kotlin Manager for Education and University Relations at JetBrains, and talk to her about the current state and future of Kotlin in academia. Kseniya will tell us about the recent increase in institutions and educators teaching Kotlin, including adoption by Stanford, Cambridge, Imperial College London, University of Chicago, and many other prestigious institutions.",
-        publishedAt = "Sat, 17 Jul 2021 13:45:00 +0000",
-        mediaUrl = "https://feeds.soundcloud.com/stream/1088610637-user-38099918-kotlin-in-education-talking-kotlin-101.mp3",
-        lengthSecond = 30439966,
-        episodeWebSiteUrl = null,
-        channel = Episode.Channel(
-            domain = "talkingkotlin.com",
-            name = "Talking Kotlin",
-            imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg"
-        )
-    ),
+val fakeRebuildEpisodes = listOf(
     Episode(
         title = "309: Museum of Unicode (kohsuke)",
         description = """<![CDATA[ <p>Kohsuke Kawaguchi さんをゲストに迎えて、起業、パンデミック、エンジニアリング、ナラティブなどについて話しました。</p>
@@ -54,12 +41,30 @@ val fakeEpisodes = listOf(
     )
 )
 
+val fakeTalkingKotlinEpisodes = listOf(
+    Episode(
+        title = "Kotlin in Education (Talking Kotlin #101)",
+        description = "In this episode, we’ll sit down with Ksenia Shneyveys, the Kotlin Manager for Education and University Relations at JetBrains, and talk to her about the current state and future of Kotlin in academia. Kseniya will tell us about the recent increase in institutions and educators teaching Kotlin, including adoption by Stanford, Cambridge, Imperial College London, University of Chicago, and many other prestigious institutions.",
+        publishedAt = "Sat, 17 Jul 2021 13:45:00 +0000",
+        mediaUrl = "https://feeds.soundcloud.com/stream/1088610637-user-38099918-kotlin-in-education-talking-kotlin-101.mp3",
+        lengthSecond = 30439966,
+        episodeWebSiteUrl = null,
+        channel = Episode.Channel(
+            domain = "talkingkotlin.com",
+            name = "Talking Kotlin",
+            imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg"
+        )
+    ),
+)
+
 class FakeEpisodeRepositoryImpl : EpisodeRepository {
     override suspend fun getEpisodes(channel: Channel): Result<List<Episode>> =
         withContext(Dispatchers.IO) {
             delay(500)
-            if (channel.webSiteUrl == "https://rebuild.fm") {
-                Result.success(fakeEpisodes)
+            if (channel.domain == "rebuild.fm") {
+                Result.success(fakeRebuildEpisodes)
+            } else if (channel.domain == "talkingkotlin.com") {
+                Result.success(fakeTalkingKotlinEpisodes)
             } else {
                 Result.failure(Exception("not found"))
             }

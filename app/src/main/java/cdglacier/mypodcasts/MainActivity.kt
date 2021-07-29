@@ -25,7 +25,7 @@ import cdglacier.mypodcasts.data.episode.FakeEpisodeRepositoryImpl
 import cdglacier.mypodcasts.model.Channel
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.channel.ChannelScreen
-import cdglacier.mypodcasts.ui.channel.detail.ChannelDetail
+import cdglacier.mypodcasts.ui.channel.detail.ChannelDetailScreen
 import cdglacier.mypodcasts.ui.component.EpisodePlayer
 import cdglacier.mypodcasts.ui.component.HeaderTabRow
 import cdglacier.mypodcasts.ui.home.HomeScreen
@@ -144,7 +144,11 @@ private fun MyPodcastsApp(
                         viewModel.fetchChannelDetail(it)
                     }
 
-                    ChannelDetail(channel = viewModel.channelDetail)
+                    ChannelDetailScreen(
+                        channel = viewModel.channelDetail.first,
+                        episodes = viewModel.channelDetail.second,
+                        playButtonOnClick = { viewModel.updatePlayingEpisode(it) }
+                    )
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {

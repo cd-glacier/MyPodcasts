@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import cdglacier.mypodcasts.data.episode.fakeEpisodes
+import cdglacier.mypodcasts.data.episode.fakeRebuildEpisodes
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 
@@ -96,7 +96,7 @@ fun EpisodeList(
 fun EpisodeListPreview() {
     MyPodcastsTheme(darkTheme = true) {
         EpisodeList(
-            episodes = fakeEpisodes,
+            episodes = fakeRebuildEpisodes,
             playButtonOnClick = {},
             titleOnClick = {}
         )

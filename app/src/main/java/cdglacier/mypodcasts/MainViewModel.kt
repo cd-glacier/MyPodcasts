@@ -29,8 +29,8 @@ class MainViewModel(
     val subscribedChannels: LiveData<List<Channel>>
         get() = _subscribedChannels
 
-    private var _channelDetail by mutableStateOf<Channel?>(null)
-    val channelDetail: Channel?
+    private var _channelDetail by mutableStateOf<Pair<Channel?, List<Episode>?>>(Pair(null, null))
+    val channelDetail: Pair<Channel?, List<Episode>?>
         get() = _channelDetail
 
     fun updatePlayingEpisode(episode: Episode) {
@@ -79,7 +79,11 @@ class MainViewModel(
     fun fetchChannelDetail(domain: String) {
         viewModelScope.launch {
             val channel = channelRepository.getChannel(domain)
-            _channelDetail = channel.getOrThrow()
+            val episodes = channel.map {
+                episodeRepository.getEpisodes(it).getOrNull()
+            }
+
+            _channelDetail = Pair(channel.getOrThrow(), episodes.getOrNull())
         }
     }
 
