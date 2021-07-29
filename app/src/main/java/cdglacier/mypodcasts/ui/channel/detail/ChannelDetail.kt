@@ -36,7 +36,7 @@ fun ChannelDetail(
             Column {
                 Text(
                     text = chan.name,
-                    style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(12.dp)
@@ -48,51 +48,13 @@ fun ChannelDetail(
                     startIndent = 8.dp
                 )
 
-                ConstraintLayout(
+                ChannelDetailContent(chan)
+
+                Text(
+                    text = chan.description,
+                    style = MaterialTheme.typography.body1,
                     modifier = Modifier.padding(12.dp)
-                ) {
-                    val (imageRef, nameRef, authorRef, webSiteUrlRef) = createRefs()
-
-                    Image(
-                        painter = rememberCoilPainter(request = chan.imageUrl, fadeIn = true),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(MaterialTheme.shapes.medium)
-                            .constrainAs(imageRef) {
-                                top.linkTo(parent.top)
-                                start.linkTo(parent.start)
-                            }
-                    )
-
-                    Text(
-                        text = chan.name,
-                        style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
-                        modifier = Modifier.constrainAs(nameRef) {
-                            top.linkTo(imageRef.top)
-                            start.linkTo(imageRef.end, 12.dp)
-                        }
-                    )
-
-                    Text(
-                        text = chan.author ?: "",
-                        style = MaterialTheme.typography.caption,
-                        modifier = Modifier.constrainAs(authorRef) {
-                            top.linkTo(nameRef.bottom)
-                            start.linkTo(imageRef.end, 12.dp)
-                        }
-                    )
-
-                    Text(
-                        text = chan.webSiteUrl,
-                        style = MaterialTheme.typography.body2,
-                        modifier = Modifier.constrainAs(webSiteUrlRef) {
-                            top.linkTo(authorRef.bottom)
-                            start.linkTo(imageRef.end, 12.dp)
-                            bottom.linkTo(imageRef.bottom)
-                        }
-                    )
-                }
+                )
             }
         }
     }
@@ -104,5 +66,54 @@ fun ChannelDetail(
 fun ChannelDetailPreview() {
     MyPodcastsTheme {
         ChannelDetail(channel = fakeChannels.first())
+    }
+}
+
+@Composable
+fun ChannelDetailContent(channel: Channel) {
+    ConstraintLayout(
+        modifier = Modifier.padding(12.dp)
+    ) {
+        val (imageRef, nameRef, authorRef, webSiteUrlRef) = createRefs()
+
+        Image(
+            painter = rememberCoilPainter(request = channel.imageUrl, fadeIn = true),
+            contentDescription = null,
+            modifier = Modifier
+                .size(100.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .constrainAs(imageRef) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                }
+        )
+
+        Text(
+            text = channel.name,
+            style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold),
+            modifier = Modifier.constrainAs(nameRef) {
+                top.linkTo(imageRef.top)
+                start.linkTo(imageRef.end, 12.dp)
+            }
+        )
+
+        Text(
+            text = channel.author ?: "",
+            style = MaterialTheme.typography.caption,
+            modifier = Modifier.constrainAs(authorRef) {
+                top.linkTo(nameRef.bottom)
+                start.linkTo(imageRef.end, 12.dp)
+            }
+        )
+
+        Text(
+            text = channel.webSiteUrl,
+            style = MaterialTheme.typography.body2,
+            modifier = Modifier.constrainAs(webSiteUrlRef) {
+                top.linkTo(authorRef.bottom)
+                start.linkTo(imageRef.end, 12.dp)
+                bottom.linkTo(imageRef.bottom)
+            }
+        )
     }
 }
