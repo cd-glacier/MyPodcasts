@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -123,6 +124,7 @@ fun LoadingEpisodeItemPreview() {
 @Composable
 fun EpisodeItem(
     episode: Episode,
+    visibleImage: Boolean = true,
     playButtonOnClick: (Episode) -> Unit,
     titleOnClick: (Episode.Channel) -> Unit
 ) {
@@ -143,25 +145,31 @@ fun EpisodeItem(
             style = MaterialTheme.typography.caption
         )
 
-        Image(
-            painter = rememberCoilPainter(request = episode.channel.imageUrl, fadeIn = true),
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
-            modifier = Modifier
-                .size(80.dp)
-                .clip(MaterialTheme.shapes.medium)
-                .constrainAs(image) {
-                    top.linkTo(publishedAtRef.bottom, margin = 4.dp)
-                    start.linkTo(parent.start)
-                }
-        )
+        if (visibleImage) {
+            Image(
+                painter = rememberCoilPainter(request = episode.channel.imageUrl, fadeIn = true),
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(MaterialTheme.shapes.medium)
+                    .constrainAs(image) {
+                        top.linkTo(publishedAtRef.bottom, margin = 4.dp)
+                        start.linkTo(parent.start)
+                    }
+            )
+        }
 
         Column(
             modifier = Modifier
                 .constrainAs(titleAndAuthor) {
-                    start.linkTo(image.end, margin = 12.dp)
+                    if (visibleImage) {
+                        start.linkTo(image.end, margin = 12.dp)
+                    } else {
+                        start.linkTo(parent.start)
+                    }
                     end.linkTo(playButton.start, margin = 12.dp)
-                    top.linkTo(image.top, margin = 4.dp)
+                    top.linkTo(publishedAtRef.bottom, margin = 4.dp)
                     bottom.linkTo(parent.bottom, margin = 4.dp)
                 }
         ) {
@@ -169,8 +177,12 @@ fun EpisodeItem(
                 text = episode.title,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.width(titleAndAuthorWidth),
-                style = MaterialTheme.typography.subtitle1
+                modifier = if (visibleImage) {
+                    Modifier.width(titleAndAuthorWidth)
+                } else {
+                    Modifier.width(300.dp)
+                },
+                style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Bold)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -221,6 +233,29 @@ fun EpisodeItemPreview() {
                 imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg",
             )
         ),
+        playButtonOnClick = {},
+        titleOnClick = {}
+    )
+}
+
+@Preview
+@Composable
+fun EpisodeItemNonImagePreview() {
+    EpisodeItem(
+        episode = Episode(
+            title = "Kotlin in Education (Talking Kotlin #101)",
+            description = "In this episode, we’ll sit down with Ksenia Shneyveys, the Kotlin Manager for Education and University Relations at JetBrains, and talk to her about the current state and future of Kotlin in academia. Kseniya will tell us about the recent increase in institutions and educators teaching Kotlin, including adoption by Stanford, Cambridge, Imperial College London, University of Chicago, and many other prestigious institutions.",
+            publishedAt = "Sat, 17 Jul 2021 13:45:00 +0000",
+            mediaUrl = "https://feeds.soundcloud.com/stream/1088610637-user-38099918-kotlin-in-education-talking-kotlin-101.mp3",
+            lengthSecond = 30439966,
+            episodeWebSiteUrl = null,
+            channel = Episode.Channel(
+                domain = "http://talkingkotlin.com",
+                name = "Talking Kotlin",
+                imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg",
+            )
+        ),
+        visibleImage = false,
         playButtonOnClick = {},
         titleOnClick = {}
     )

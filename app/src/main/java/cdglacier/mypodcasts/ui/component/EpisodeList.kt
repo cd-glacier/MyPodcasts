@@ -39,6 +39,7 @@ fun LoadingEpisodeList() {
 @Composable
 fun EpisodeList(
     episodes: List<Episode>?,
+    visibleImage: Boolean = true,
     playButtonOnClick: (Episode) -> Unit,
     titleOnClick: (Episode.Channel) -> Unit
 ) {
@@ -75,6 +76,7 @@ fun EpisodeList(
                         items(episodes) {
                             EpisodeItem(
                                 episode = it,
+                                visibleImage = visibleImage,
                                 playButtonOnClick = playButtonOnClick,
                                 titleOnClick = titleOnClick
                             )
