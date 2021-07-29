@@ -21,31 +21,24 @@ import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 
 @Composable
 fun LoadingEpisodeList() {
-    Card(
-        modifier = Modifier
-            .padding(2.dp)
-            .background(MaterialTheme.colors.surface)
-            .padding(4.dp)
+    Column(
+        Modifier
+            .fillMaxWidth()
     ) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-        ) {
-            for (i in 0..2) {
-                LoadingEpisodeItem()
-                Divider(
-                    color = MaterialTheme.colors.background,
-                    thickness = 1.dp,
-                    startIndent = 8.dp
-                )
-            }
+        for (i in 0..2) {
+            LoadingEpisodeItem()
+            Divider(
+                color = MaterialTheme.colors.background,
+                thickness = 1.dp,
+                startIndent = 8.dp
+            )
         }
     }
 }
 
 @Composable
 fun EpisodeList(
-    episodes: List<Episode>,
+    episodes: List<Episode>?,
     playButtonOnClick: (Episode) -> Unit,
     titleOnClick: (Episode.Channel) -> Unit
 ) {
@@ -55,7 +48,7 @@ fun EpisodeList(
             .background(MaterialTheme.colors.surface)
             .padding(4.dp)
     ) {
-        Column() {
+        Column {
             Text(
                 text = "Latest Episodes",
                 style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
@@ -70,18 +63,28 @@ fun EpisodeList(
                 startIndent = 8.dp
             )
 
-            LazyColumn {
-                items(episodes) {
-                    EpisodeItem(
-                        episode = it,
-                        playButtonOnClick = playButtonOnClick,
-                        titleOnClick = titleOnClick
-                    )
-                    Divider(
-                        color = MaterialTheme.colors.background,
-                        thickness = 1.dp,
-                        startIndent = 8.dp
-                    )
+            when {
+                episodes == null -> {
+                    LoadingEpisodeList()
+                }
+                episodes.isEmpty() -> {
+                    Text("empty")
+                }
+                else -> {
+                    LazyColumn {
+                        items(episodes) {
+                            EpisodeItem(
+                                episode = it,
+                                playButtonOnClick = playButtonOnClick,
+                                titleOnClick = titleOnClick
+                            )
+                            Divider(
+                                color = MaterialTheme.colors.background,
+                                thickness = 1.dp,
+                                startIndent = 8.dp
+                            )
+                        }
+                    }
                 }
             }
         }
