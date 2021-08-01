@@ -33,6 +33,10 @@ class MainViewModel(
     val channelDetail: Pair<Channel?, List<Episode>?>
         get() = _channelDetail
 
+    private var _episodeDetail by mutableStateOf<Episode?>(null)
+    val episodeDetail: Episode?
+        get() = _episodeDetail
+
     fun updatePlayingEpisode(episode: Episode) {
         _playingEpisode = episode
 
@@ -79,11 +83,18 @@ class MainViewModel(
     fun fetchChannelDetail(domain: String) {
         viewModelScope.launch {
             val channel = channelRepository.getChannel(domain)
-            val episodes = channel.map {
-                episodeRepository.getEpisodes(it).getOrNull()
-            }
+            val episodes = episodeRepository.getEpisodes(channel.getOrThrow())
 
-            _channelDetail = Pair(channel.getOrThrow(), episodes.getOrNull())
+            _channelDetail = Pair(channel.getOrThrow(), episodes.getOrThrow())
+        }
+    }
+
+    fun fetchEpisodeDetail(domain: String, title: String) {
+        viewModelScope.launch {
+            val channel = channelRepository.getChannel(domain)
+            val episode = episodeRepository.getEpisode(channel.getOrThrow(), title)
+
+            _episodeDetail = episode.getOrThrow()
         }
     }
 

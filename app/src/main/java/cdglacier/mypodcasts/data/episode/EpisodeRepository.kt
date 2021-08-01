@@ -5,4 +5,5 @@ import cdglacier.mypodcasts.model.Episode
 
 interface EpisodeRepository {
     suspend fun getEpisodes(channel: Channel): Result<List<Episode>>
+    suspend fun getEpisode(channel: Channel, title: String): Result<Episode>
 }

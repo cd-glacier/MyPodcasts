@@ -28,7 +28,7 @@ import cdglacier.mypodcasts.ui.channel.ChannelScreen
 import cdglacier.mypodcasts.ui.channel.detail.ChannelDetailScreen
 import cdglacier.mypodcasts.ui.component.EpisodePlayer
 import cdglacier.mypodcasts.ui.component.HeaderTabRow
-import cdglacier.mypodcasts.ui.episode.detail.EpisodeDetail
+import cdglacier.mypodcasts.ui.episode.detail.EpisodeDetailScreen
 import cdglacier.mypodcasts.ui.home.HomeScreen
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 import com.google.android.exoplayer2.ExoPlayer
@@ -169,7 +169,14 @@ private fun MyPodcastsApp(
                         }
                     )
                 ) { entry ->
-                    EpisodeDetail()
+                    val domain = entry.arguments?.getString("domain")
+                    val title = entry.arguments?.getString("title")
+
+                    if (domain != null && title != null) {
+                        viewModel.fetchEpisodeDetail(domain, title)
+                    }
+
+                    EpisodeDetailScreen(episode = viewModel.episodeDetail)
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {

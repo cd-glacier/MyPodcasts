@@ -36,7 +36,8 @@ val fakeRebuildEpisodes = listOf(
         channel = Episode.Channel(
             domain = "rebuild.fm",
             name = "Rebuild",
-            imageUrl = "https://cdn.rebuild.fm/images/icon240.png"
+            imageUrl = "https://cdn.rebuild.fm/images/icon240.png",
+            author = "Tatsuhiko Miyagawa"
         )
     )
 )
@@ -48,11 +49,12 @@ val fakeTalkingKotlinEpisodes = listOf(
         publishedAt = "Sat, 17 Jul 2021 13:45:00 +0000",
         mediaUrl = "https://feeds.soundcloud.com/stream/1088610637-user-38099918-kotlin-in-education-talking-kotlin-101.mp3",
         lengthSecond = 30439966,
-        episodeWebSiteUrl = null,
+        episodeWebSiteUrl = "https://soundcloud.com/user-38099918/kotlin-in-education-talking-kotlin-101",
         channel = Episode.Channel(
             domain = "talkingkotlin.com",
             name = "Talking Kotlin",
-            imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg"
+            imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg",
+            author = null
         )
     ),
 )
@@ -67,6 +69,17 @@ class FakeEpisodeRepositoryImpl : EpisodeRepository {
                 Result.success(fakeTalkingKotlinEpisodes)
             } else {
                 Result.failure(Exception("not found"))
+            }
+        }
+
+    override suspend fun getEpisode(channel: Channel, title: String): Result<Episode> =
+        withContext(Dispatchers.IO) {
+            if (channel.domain == "rebuild.fm" && title == "309: Museum of Unicode (kohsuke)") {
+                Result.success(fakeRebuildEpisodes.first())
+            } else if (channel.domain == "talkingkotlin.com" && title == "Kotlin in Education (Talking Kotlin #101)") {
+                Result.success(fakeTalkingKotlinEpisodes.first())
+            } else {
+                Result.failure(Exception("episode not found"))
             }
         }
 }
