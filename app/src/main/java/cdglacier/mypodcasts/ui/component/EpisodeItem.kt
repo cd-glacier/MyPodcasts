@@ -125,6 +125,7 @@ fun LoadingEpisodeItemPreview() {
 fun EpisodeItem(
     episode: Episode,
     visibleImage: Boolean = true,
+    onClick: (Episode) -> Unit,
     playButtonOnClick: (Episode) -> Unit,
     titleOnClick: (Episode.Channel) -> Unit
 ) {
@@ -132,6 +133,7 @@ fun EpisodeItem(
         modifier = Modifier
             .padding(itemPadding)
             .fillMaxWidth()
+            .clickable { onClick(episode) }
     ) {
         val (publishedAtRef, image, titleAndAuthor, playButton) = createRefs()
 
@@ -233,6 +235,7 @@ fun EpisodeItemPreview() {
                 imageUrl = "https://i1.sndcdn.com/avatars-000289370353-di6ese-original.jpg",
             )
         ),
+        onClick = {},
         playButtonOnClick = {},
         titleOnClick = {}
     )
@@ -256,6 +259,7 @@ fun EpisodeItemNonImagePreview() {
             )
         ),
         visibleImage = false,
+        onClick = {},
         playButtonOnClick = {},
         titleOnClick = {}
     )

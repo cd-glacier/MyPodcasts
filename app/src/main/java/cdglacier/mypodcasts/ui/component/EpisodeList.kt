@@ -40,6 +40,7 @@ fun LoadingEpisodeList() {
 fun EpisodeList(
     episodes: List<Episode>?,
     visibleImage: Boolean = true,
+    itemOnClick: (Episode) -> Unit,
     playButtonOnClick: (Episode) -> Unit,
     titleOnClick: (Episode.Channel) -> Unit
 ) {
@@ -77,6 +78,7 @@ fun EpisodeList(
                             EpisodeItem(
                                 episode = it,
                                 visibleImage = visibleImage,
+                                onClick = itemOnClick,
                                 playButtonOnClick = playButtonOnClick,
                                 titleOnClick = titleOnClick
                             )
@@ -99,6 +101,7 @@ fun EpisodeListPreview() {
     MyPodcastsTheme(darkTheme = true) {
         EpisodeList(
             episodes = fakeRebuildEpisodes,
+            itemOnClick = {},
             playButtonOnClick = {},
             titleOnClick = {}
         )

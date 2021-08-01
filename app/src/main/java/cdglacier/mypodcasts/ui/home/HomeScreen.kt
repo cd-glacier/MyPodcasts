@@ -9,11 +9,13 @@ import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 @Composable
 fun HomeScreen(
     latestEpisodes: List<Episode>?,
+    episodeItemOnClick: (Episode) -> Unit,
     playButtonOnClick: (Episode) -> Unit,
     titleOnClick: (Episode.Channel) -> Unit
 ) {
     EpisodeList(
         episodes = latestEpisodes,
+        itemOnClick = episodeItemOnClick,
         playButtonOnClick = playButtonOnClick,
         titleOnClick = titleOnClick
     )
@@ -25,6 +27,7 @@ private fun HomeScreenLoadingPreview() {
     MyPodcastsTheme {
         HomeScreen(
             latestEpisodes = null,
+            episodeItemOnClick = {},
             playButtonOnClick = {},
             titleOnClick = {}
         )

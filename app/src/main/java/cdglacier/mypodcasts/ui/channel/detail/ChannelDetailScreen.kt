@@ -14,6 +14,7 @@ import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 fun ChannelDetailScreen(
     channel: Channel?,
     episodes: List<Episode>?,
+    episodeItemOnClick: (Episode) -> Unit,
     playButtonOnClick: (Episode) -> Unit,
 ) {
     Column {
@@ -22,6 +23,7 @@ fun ChannelDetailScreen(
         EpisodeList(
             episodes = episodes,
             visibleImage = false,
+            itemOnClick = episodeItemOnClick,
             playButtonOnClick = playButtonOnClick,
             titleOnClick = {}
         )
@@ -35,6 +37,7 @@ fun ChannelDetailScreenPreview() {
         ChannelDetailScreen(
             channel = fakeChannels.first(),
             episodes = fakeRebuildEpisodes,
+            episodeItemOnClick = {},
             playButtonOnClick = {}
         )
     }

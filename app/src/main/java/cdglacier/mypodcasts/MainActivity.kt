@@ -28,6 +28,7 @@ import cdglacier.mypodcasts.ui.channel.ChannelScreen
 import cdglacier.mypodcasts.ui.channel.detail.ChannelDetailScreen
 import cdglacier.mypodcasts.ui.component.EpisodePlayer
 import cdglacier.mypodcasts.ui.component.HeaderTabRow
+import cdglacier.mypodcasts.ui.episode.detail.EpisodeDetail
 import cdglacier.mypodcasts.ui.home.HomeScreen
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 import com.google.android.exoplayer2.ExoPlayer
@@ -119,6 +120,9 @@ private fun MyPodcastsApp(
                 composable(MyPodcastsScreen.Home.name) {
                     HomeScreen(
                         latestEpisodes = latestEpisodes,
+                        episodeItemOnClick = { episode ->
+                            navController.navigate("${MyPodcastsScreen.Channel.name}/${episode.channel.domain}/${episode.title}")
+                        },
                         playButtonOnClick = { viewModel.updatePlayingEpisode(it) },
                         titleOnClick = { channel -> navController.navigate("${MyPodcastsScreen.Channel.name}/${channel.domain}") }
                     )
@@ -147,8 +151,25 @@ private fun MyPodcastsApp(
                     ChannelDetailScreen(
                         channel = viewModel.channelDetail.first,
                         episodes = viewModel.channelDetail.second,
+                        episodeItemOnClick = { episode ->
+                            navController.navigate("${MyPodcastsScreen.Channel.name}/${episode.channel.domain}/${episode.title}")
+                        },
                         playButtonOnClick = { viewModel.updatePlayingEpisode(it) }
                     )
+                }
+
+                composable(
+                    route = "${MyPodcastsScreen.Channel.name}/{domain}/{title}",
+                    arguments = listOf(
+                        navArgument("domain") {
+                            type = NavType.StringType
+                        },
+                        navArgument("title") {
+                            type = NavType.StringType
+                        }
+                    )
+                ) { entry ->
+                    EpisodeDetail()
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {
