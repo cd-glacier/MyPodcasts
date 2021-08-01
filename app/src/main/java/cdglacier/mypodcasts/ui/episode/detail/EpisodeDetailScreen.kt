@@ -8,14 +8,20 @@ import androidx.compose.ui.Modifier
 import cdglacier.mypodcasts.model.Episode
 
 @Composable
-fun EpisodeDetailScreen(episode: Episode?) {
+fun EpisodeDetailScreen(
+    episode: Episode?,
+    playButtonOnClick: (Episode) -> Unit,
+) {
     val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier.verticalScroll(scrollState)
     ) {
         episode?.let {
-            EpisodeDetail(episode = it)
+            EpisodeDetail(
+                episode = it,
+                playButtonOnClick = playButtonOnClick
+            )
         }
     }
 }

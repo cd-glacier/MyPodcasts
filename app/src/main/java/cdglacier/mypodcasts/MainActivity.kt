@@ -176,7 +176,16 @@ private fun MyPodcastsApp(
                         viewModel.fetchEpisodeDetail(domain, title)
                     }
 
-                    EpisodeDetailScreen(episode = viewModel.episodeDetail)
+                    EpisodeDetailScreen(
+                        episode = viewModel.episodeDetail,
+                        playButtonOnClick = {
+                            viewModel.updatePlayingEpisode(
+                                requireNotNull(
+                                    viewModel.episodeDetail
+                                )
+                            )
+                        }
+                    )
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {

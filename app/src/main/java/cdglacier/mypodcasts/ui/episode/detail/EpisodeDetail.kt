@@ -17,11 +17,15 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import cdglacier.mypodcasts.data.episode.fakeTalkingKotlinEpisodes
 import cdglacier.mypodcasts.model.Episode
+import cdglacier.mypodcasts.ui.component.RoundedPlayButton
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
-fun EpisodeDetail(episode: Episode) {
+fun EpisodeDetail(
+    episode: Episode,
+    playButtonOnClick: (Episode) -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(2.dp)
@@ -45,7 +49,9 @@ fun EpisodeDetail(episode: Episode) {
 
             EpisodeDetailBaseContent(episode = episode)
 
-            ActionRow()
+            ActionRow(
+                playButtonOnClick = { playButtonOnClick(episode) }
+            )
 
             Text(
                 text = episode.description ?: "",
@@ -132,12 +138,17 @@ fun EpisodeDetailBaseContent(episode: Episode) {
 }
 
 @Composable
-fun ActionRow() {
+fun ActionRow(
+    playButtonOnClick: () -> Unit
+) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp, 0.dp)
     ) {
-        // TODO: impl
-        Text("Play button")
+        RoundedPlayButton(
+            onClick = playButtonOnClick
+        )
     }
 }
 
@@ -146,7 +157,8 @@ fun ActionRow() {
 fun EpisodeDetailPreview() {
     MyPodcastsTheme {
         EpisodeDetail(
-            episode = fakeTalkingKotlinEpisodes.first()
+            episode = fakeTalkingKotlinEpisodes.first(),
+            playButtonOnClick = {}
         )
     }
 }
