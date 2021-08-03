@@ -13,7 +13,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -30,6 +29,7 @@ import cdglacier.mypodcasts.ui.component.EpisodePlayer
 import cdglacier.mypodcasts.ui.component.HeaderTabRow
 import cdglacier.mypodcasts.ui.episode.detail.EpisodeDetailScreen
 import cdglacier.mypodcasts.ui.home.HomeScreen
+import cdglacier.mypodcasts.ui.setting.SettingScreen
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -189,7 +189,7 @@ private fun MyPodcastsApp(
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {
-                    Text(MyPodcastsScreen.Setting.name)
+                    SettingScreen()
                 }
             }
         }
