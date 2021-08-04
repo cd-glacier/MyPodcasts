@@ -37,12 +37,6 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.SimpleExoPlayer
 
 class MainActivity : ComponentActivity() {
-    private val exoPlayer: ExoPlayer by lazy {
-        SimpleExoPlayer.Builder(this).build()
-    }
-
-    private lateinit var database: MyPodcastDatabaseDao
-
     private val viewModel: MainViewModel by lazy {
         val channelRepository = ChannelRepositoryImpl(database)
         val episodeRepository = FakeEpisodeRepositoryImpl()
@@ -51,10 +45,16 @@ class MainActivity : ComponentActivity() {
         ViewModelProvider(this, factory)[MainViewModel::class.java]
     }
 
+    private val database: MyPodcastDatabaseDao by lazy {
+        MyPodcastDatabase.getInstance(applicationContext).dao
+    }
+
+    private val exoPlayer: ExoPlayer by lazy {
+        SimpleExoPlayer.Builder(this).build()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        database = MyPodcastDatabase.getInstance(applicationContext).dao
 
         viewModel.refetchLatestEpisodes()
         viewModel.refetchSubscribedChannels()
