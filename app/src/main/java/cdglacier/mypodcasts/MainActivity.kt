@@ -19,7 +19,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
-import cdglacier.mypodcasts.data.channel.impl.FakeChannelRepositoryImpl
+import cdglacier.mypodcasts.data.MyPodcastDatabase
+import cdglacier.mypodcasts.data.MyPodcastDatabaseDao
+import cdglacier.mypodcasts.data.channel.impl.ChannelRepositoryImpl
 import cdglacier.mypodcasts.data.episode.FakeEpisodeRepositoryImpl
 import cdglacier.mypodcasts.model.Channel
 import cdglacier.mypodcasts.model.Episode
@@ -39,8 +41,10 @@ class MainActivity : ComponentActivity() {
         SimpleExoPlayer.Builder(this).build()
     }
 
+    private lateinit var database: MyPodcastDatabaseDao
+
     private val viewModel: MainViewModel by lazy {
-        val channelRepository = FakeChannelRepositoryImpl()
+        val channelRepository = ChannelRepositoryImpl(database)
         val episodeRepository = FakeEpisodeRepositoryImpl()
 
         val factory = MainViewModel.Factory(exoPlayer, channelRepository, episodeRepository)
@@ -49,6 +53,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        database = MyPodcastDatabase.getInstance(applicationContext).dao
 
         viewModel.refetchLatestEpisodes()
         viewModel.refetchSubscribedChannels()

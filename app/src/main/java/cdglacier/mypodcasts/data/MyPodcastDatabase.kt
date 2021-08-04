@@ -4,10 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import cdglacier.mypodcasts.model.Channel
-import cdglacier.mypodcasts.model.Episode
+import cdglacier.mypodcasts.data.channel.Channel
 
-@Database(entities = [Episode::class, Channel::class], version = 1, exportSchema = false)
+@Database(entities = [Channel::class], version = 1, exportSchema = false)
 abstract class MyPodcastDatabase : RoomDatabase() {
     abstract val dao: MyPodcastDatabaseDao
 
