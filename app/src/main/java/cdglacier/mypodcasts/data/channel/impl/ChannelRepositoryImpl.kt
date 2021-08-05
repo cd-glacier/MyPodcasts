@@ -4,9 +4,9 @@ import cdglacier.mypodcasts.data.MyPodcastDatabaseDao
 import cdglacier.mypodcasts.data.channel.ChannelRepository
 import cdglacier.mypodcasts.httpclient.HttpClient
 import cdglacier.mypodcasts.model.Channel
+import com.prof.rssparser.Parser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.Request
 
 class ChannelRepositoryImpl(
     private val database: MyPodcastDatabaseDao,
@@ -19,10 +19,17 @@ class ChannelRepositoryImpl(
                 it.newFeedsUrl
             }
 
-            // TODO: fetch channel info from newFeedUrl
-            fetchChanel(newFeedsUrls.first())
+            println("----------feed url-----------")
+            println(newFeedsUrls)
 
-            Result.success(listOf()) // FIXME
+            val channels = newFeedsUrls.mapNotNull {
+                fetchChanel(it).getOrNull()
+            }
+
+            println("----------channels-----------")
+            println(channels)
+
+            Result.success(channels)
         }
 
     override suspend fun getChannel(domain: String): Result<Channel> {
@@ -30,15 +37,23 @@ class ChannelRepositoryImpl(
     }
 
     private suspend fun fetchChanel(newFeedUrl: String): Result<Channel> {
-        val request = Request.Builder()
-            .url(newFeedUrl)
+        val parser = Parser.Builder()
             .build()
 
         return withContext(Dispatchers.IO) {
-            val body = httpClient.getInstance().newCall(request = request).execute().body?.string()
+            val channel = parser.getChannel(newFeedUrl)
 
-            // TODO: parse rss
-            Result.success(fakeChannels.first())
+            Result.success(
+                Channel(
+                    domain = channel.link?.removePrefix("https://")?.removePrefix("http://") ?: "",
+                    name = channel.title ?: "",
+                    author = channel.articles.firstOrNull()?.author,
+                    imageUrl = channel.image?.url ?: channel.articles.firstOrNull()?.image,
+                    description = channel.description,
+                    newFeedsUrl = newFeedUrl,
+                    webSiteUrl = channel.link
+                )
+            )
         }
     }
 }

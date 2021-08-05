@@ -50,11 +50,13 @@ fun ChannelDetail(
 
                 ChannelDetailContent(chan)
 
-                Text(
-                    text = chan.description,
-                    style = MaterialTheme.typography.body1,
-                    modifier = Modifier.padding(12.dp)
-                )
+                chan.description?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.body1,
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
             }
         }
     }
@@ -106,14 +108,16 @@ fun ChannelDetailContent(channel: Channel) {
             }
         )
 
-        Text(
-            text = channel.webSiteUrl,
-            style = MaterialTheme.typography.body2,
-            modifier = Modifier.constrainAs(webSiteUrlRef) {
-                top.linkTo(authorRef.bottom)
-                start.linkTo(imageRef.end, 12.dp)
-                bottom.linkTo(imageRef.bottom)
-            }
-        )
+        channel.webSiteUrl?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.body2,
+                modifier = Modifier.constrainAs(webSiteUrlRef) {
+                    top.linkTo(authorRef.bottom)
+                    start.linkTo(imageRef.end, 12.dp)
+                    bottom.linkTo(imageRef.bottom)
+                }
+            )
+        }
     }
 }

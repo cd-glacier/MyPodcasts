@@ -12,7 +12,7 @@ val fakeChannels = listOf<Channel>(
         author = "Tatsuhiko Miyagawa",
         imageUrl = "https://cdn.rebuild.fm/images/icon240.png",
         description = "ウェブ開発、プログラミング、モバイル、ガジェットなどにフォーカスしたテクノロジー系ポッドキャストです。 #rebuildfm",
-        newFeedsUrl = "https://feeds.soundcloud.com/users/soundcloud:users:280353173/sounds.rss",
+        newFeedsUrl = "https://feeds.rebuild.fm/rebuildfm",
         webSiteUrl = "https://rebuild.fm"
     ),
     Channel(
