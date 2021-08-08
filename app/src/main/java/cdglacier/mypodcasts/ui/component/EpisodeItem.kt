@@ -138,15 +138,17 @@ fun EpisodeItem(
     ) {
         val (publishedAtRef, image, titleAndAuthor, playButton) = createRefs()
 
-        Text(
-            episode.publishedAt,
-            modifier = Modifier
-                .constrainAs(publishedAtRef) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                },
-            style = MaterialTheme.typography.caption
-        )
+        episode.publishedAt?.let {
+            Text(
+                it,
+                modifier = Modifier
+                    .constrainAs(publishedAtRef) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                    },
+                style = MaterialTheme.typography.caption
+            )
+        }
 
         if (visibleImage) {
             Image(

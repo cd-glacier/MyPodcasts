@@ -79,16 +79,18 @@ fun EpisodeDetailBaseContent(episode: Episode) {
             webSiteUrlRef,
         ) = createRefs()
 
-        Text(
-            text = episode.publishedAt,
-            style = MaterialTheme.typography.caption,
-            modifier = Modifier
-                .padding(4.dp)
-                .constrainAs(publishedAtRef) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                }
-        )
+        episode.publishedAt?.let {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.caption,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .constrainAs(publishedAtRef) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                    }
+            )
+        }
 
         Image(
             painter = rememberCoilPainter(request = episode.channel.imageUrl, fadeIn = true),
@@ -120,20 +122,21 @@ fun EpisodeDetailBaseContent(episode: Episode) {
             }
         )
 
-        Text(
-            text = episode.episodeWebSiteUrl,
-            style = MaterialTheme.typography.body2,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .width(240.dp)
-                .constrainAs(webSiteUrlRef) {
-                    top.linkTo(authorRef.bottom)
-                    start.linkTo(imageRef.end, 12.dp)
-                    bottom.linkTo(imageRef.bottom)
-                }
-        )
-
+        episode.episodeWebSiteUrl?.let {
+            Text(
+                text = episode.episodeWebSiteUrl,
+                style = MaterialTheme.typography.body2,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .width(240.dp)
+                    .constrainAs(webSiteUrlRef) {
+                        top.linkTo(authorRef.bottom)
+                        start.linkTo(imageRef.end, 12.dp)
+                        bottom.linkTo(imageRef.bottom)
+                    }
+            )
+        }
     }
 }
 

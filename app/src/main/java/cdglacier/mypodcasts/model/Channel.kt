@@ -7,5 +7,7 @@ data class Channel(
     val imageUrl: String?,
     val description: String?,
     val newFeedsUrl: String,
-    val webSiteUrl: String?
+    val webSiteUrl: String?,
+    
+    val episodes: List<Episode>?
 )

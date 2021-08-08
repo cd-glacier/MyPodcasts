@@ -1,10 +1,14 @@
 package cdglacier.mypodcasts.data.channel.impl
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import cdglacier.mypodcasts.data.MyPodcastDatabaseDao
 import cdglacier.mypodcasts.data.channel.ChannelRepository
 import cdglacier.mypodcasts.httpclient.HttpClient
 import cdglacier.mypodcasts.model.Channel
-import com.prof.rssparser.Parser
+import cdglacier.mypodcasts.model.Episode
+import dev.stalla.PodcastRssParser
+import dev.stalla.model.atom.AtomPerson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -13,6 +17,7 @@ class ChannelRepositoryImpl(
 ) : ChannelRepository {
     private val httpClient = HttpClient()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getSubscribedChannel(): Result<List<Channel>> =
         withContext(Dispatchers.IO) {
             val newFeedsUrls = database.getSubscribedChannels().map {
@@ -36,24 +41,49 @@ class ChannelRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    private suspend fun fetchChanel(newFeedUrl: String): Result<Channel> {
-        val parser = Parser.Builder()
-            .build()
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun fetchChanel(newFeedsUrl: String): Result<Channel> {
 
         return withContext(Dispatchers.IO) {
-            val channel = parser.getChannel(newFeedUrl)
+            val podcast = PodcastRssParser.parse(newFeedsUrl)
 
-            Result.success(
-                Channel(
-                    domain = channel.link?.removePrefix("https://")?.removePrefix("http://") ?: "",
-                    name = channel.title ?: "",
-                    author = channel.articles.firstOrNull()?.author,
-                    imageUrl = channel.image?.url ?: channel.articles.firstOrNull()?.image,
-                    description = channel.description,
-                    newFeedsUrl = newFeedUrl,
-                    webSiteUrl = channel.link
+            if (podcast != null) {
+                Result.success(
+                    Channel(
+                        domain = podcast.link.removePrefix("https://").removePrefix("http://"),
+                        name = podcast.title,
+                        author = podcast.atom?.authors?.join() ?: podcast.itunes?.author,
+                        imageUrl = podcast.image?.url
+                            ?: podcast.episodes.first().itunes?.image?.href,
+                        description = podcast.description,
+                        newFeedsUrl = newFeedsUrl,
+                        webSiteUrl = podcast.link,
+                        episodes = podcast.episodes.map {
+                            Episode(
+                                title = it.title,
+                                description = it.description,
+                                publishedAt = it.pubDate?.toString(),
+                                mediaUrl = it.enclosure.url,
+                                lengthSecond = it.itunes?.duration?.rawDuration?.seconds,
+                                episodeWebSiteUrl = it.link,
+                                channel = Episode.Channel(
+                                    domain = podcast.link.removePrefix("https://")
+                                        .removePrefix("http://"),
+                                    name = podcast.title,
+                                    imageUrl = podcast.image?.url
+                                        ?: podcast.episodes.first().itunes?.image?.href,
+                                    author = podcast.atom?.authors?.join()
+                                        ?: podcast.itunes?.author,
+                                )
+                            )
+                        }
+                    )
                 )
-            )
+            } else {
+                Result.failure(Throwable("Podcast not found"))
+            }
         }
     }
 }
+
+private fun List<AtomPerson>.join() = this.joinToString(", ")
