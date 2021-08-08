@@ -22,7 +22,7 @@ import androidx.navigation.compose.*
 import cdglacier.mypodcasts.data.MyPodcastDatabase
 import cdglacier.mypodcasts.data.MyPodcastDatabaseDao
 import cdglacier.mypodcasts.data.channel.impl.ChannelRepositoryImpl
-import cdglacier.mypodcasts.data.episode.FakeEpisodeRepositoryImpl
+import cdglacier.mypodcasts.data.episode.impl.FakeEpisodeRepositoryImpl
 import cdglacier.mypodcasts.model.Channel
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.channel.ChannelScreen

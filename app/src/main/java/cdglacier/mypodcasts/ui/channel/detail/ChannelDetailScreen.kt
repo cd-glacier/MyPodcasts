@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import cdglacier.mypodcasts.data.channel.impl.fakeChannels
-import cdglacier.mypodcasts.data.episode.fakeRebuildEpisodes
+import cdglacier.mypodcasts.data.episode.impl.fakeRebuildEpisodes
 import cdglacier.mypodcasts.model.Channel
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.component.EpisodeList

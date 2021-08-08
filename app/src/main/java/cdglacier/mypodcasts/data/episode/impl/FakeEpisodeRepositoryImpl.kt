@@ -1,5 +1,6 @@
-package cdglacier.mypodcasts.data.episode
+package cdglacier.mypodcasts.data.episode.impl
 
+import cdglacier.mypodcasts.data.episode.EpisodeRepository
 import cdglacier.mypodcasts.model.Channel
 import cdglacier.mypodcasts.model.Episode
 import kotlinx.coroutines.Dispatchers

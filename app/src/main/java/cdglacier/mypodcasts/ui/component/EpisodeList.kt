@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import cdglacier.mypodcasts.data.episode.fakeRebuildEpisodes
+import cdglacier.mypodcasts.data.episode.impl.fakeRebuildEpisodes
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 

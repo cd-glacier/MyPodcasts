@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import cdglacier.mypodcasts.data.episode.fakeTalkingKotlinEpisodes
+import cdglacier.mypodcasts.data.episode.impl.fakeTalkingKotlinEpisodes
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.component.RoundedPlayButton
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
