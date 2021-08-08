@@ -22,7 +22,7 @@ import androidx.navigation.compose.*
 import cdglacier.mypodcasts.data.MyPodcastDatabase
 import cdglacier.mypodcasts.data.MyPodcastDatabaseDao
 import cdglacier.mypodcasts.data.channel.impl.ChannelRepositoryImpl
-import cdglacier.mypodcasts.data.episode.impl.FakeEpisodeRepositoryImpl
+import cdglacier.mypodcasts.data.episode.impl.EpisodeRepositoryImpl
 import cdglacier.mypodcasts.model.Channel
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.channel.ChannelScreen
@@ -39,7 +39,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by lazy {
         val channelRepository = ChannelRepositoryImpl(database)
-        val episodeRepository = FakeEpisodeRepositoryImpl()
+        val episodeRepository = EpisodeRepositoryImpl()
 
         val factory = MainViewModel.Factory(exoPlayer, channelRepository, episodeRepository)
         ViewModelProvider(this, factory)[MainViewModel::class.java]

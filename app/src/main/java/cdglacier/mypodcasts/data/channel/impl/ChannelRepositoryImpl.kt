@@ -6,7 +6,6 @@ import cdglacier.mypodcasts.data.MyPodcastDatabaseDao
 import cdglacier.mypodcasts.data.channel.ChannelRepository
 import cdglacier.mypodcasts.httpclient.HttpClient
 import cdglacier.mypodcasts.model.Channel
-import cdglacier.mypodcasts.model.Episode
 import dev.stalla.PodcastRssParser
 import dev.stalla.model.atom.AtomPerson
 import kotlinx.coroutines.Dispatchers
@@ -20,70 +19,55 @@ class ChannelRepositoryImpl(
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getSubscribedChannel(): Result<List<Channel>> =
         withContext(Dispatchers.IO) {
-            val newFeedsUrls = database.getSubscribedChannels().map {
-                it.newFeedsUrl
+            val channels = database.getSubscribedChannels()
+
+            val notStoredChannels = channels.filter { it.name == null }
+            notStoredChannels.forEach {
+                val channel = fetchChanel(it.newFeedsUrl)
+                database.updateChannel(channel.getOrThrow())
             }
 
-            println("----------feed url-----------")
-            println(newFeedsUrls)
-
-            val channels = newFeedsUrls.mapNotNull {
-                fetchChanel(it).getOrNull()
-            }
-
-            println("----------channels-----------")
-            println(channels)
-
-            Result.success(channels)
+            Result.success(database.getSubscribedChannels().map { it.translate() })
         }
 
-    override suspend fun getChannel(domain: String): Result<Channel> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getChannel(domain: String): Result<Channel> =
+        withContext(Dispatchers.IO) {
+            Result.success(database.getChannel(domain).translate())
+        }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun fetchChanel(newFeedsUrl: String): Result<Channel> {
-
-        return withContext(Dispatchers.IO) {
+    private suspend fun fetchChanel(newFeedsUrl: String): Result<cdglacier.mypodcasts.data.channel.Channel> =
+        withContext(Dispatchers.IO) {
             val podcast = PodcastRssParser.parse(newFeedsUrl)
-
             if (podcast != null) {
                 Result.success(
-                    Channel(
+                    cdglacier.mypodcasts.data.channel.Channel(
+                        id = null,
                         domain = podcast.link.removePrefix("https://").removePrefix("http://"),
                         name = podcast.title,
                         author = podcast.atom?.authors?.join() ?: podcast.itunes?.author,
                         imageUrl = podcast.image?.url
-                            ?: podcast.episodes.first().itunes?.image?.href,
+                            ?: podcast.itunes?.image?.href,
                         description = podcast.description,
                         newFeedsUrl = newFeedsUrl,
                         webSiteUrl = podcast.link,
-                        episodes = podcast.episodes.map {
-                            Episode(
-                                title = it.title,
-                                description = it.description,
-                                publishedAt = it.pubDate?.toString(),
-                                mediaUrl = it.enclosure.url,
-                                lengthSecond = it.itunes?.duration?.rawDuration?.seconds,
-                                episodeWebSiteUrl = it.link,
-                                channel = Episode.Channel(
-                                    domain = podcast.link.removePrefix("https://")
-                                        .removePrefix("http://"),
-                                    name = podcast.title,
-                                    imageUrl = podcast.image?.url
-                                        ?: podcast.episodes.first().itunes?.image?.href,
-                                    author = podcast.atom?.authors?.join()
-                                        ?: podcast.itunes?.author,
-                                )
-                            )
-                        }
                     )
                 )
             } else {
                 Result.failure(Throwable("Podcast not found"))
             }
         }
-    }
 }
 
 private fun List<AtomPerson>.join() = this.joinToString(", ")
+
+private fun cdglacier.mypodcasts.data.channel.Channel.translate() =
+    Channel(
+        domain = this.domain ?: "",
+        name = this.name ?: "",
+        author = this.author,
+        imageUrl = this.imageUrl,
+        description = this.description,
+        newFeedsUrl = this.newFeedsUrl,
+        webSiteUrl = this.webSiteUrl
+    )

@@ -8,6 +8,4 @@ data class Channel(
     val description: String?,
     val newFeedsUrl: String,
     val webSiteUrl: String?,
-    
-    val episodes: List<Episode>?
 )

@@ -83,7 +83,6 @@ fun ChannelItemPreview() {
             description = "ウェブ開発、プログラミング、モバイル、ガジェットなどにフォーカスしたテクノロジー系ポッドキャストです。 #rebuildfm",
             newFeedsUrl = "https://feeds.soundcloud.com/users/soundcloud:users:280353173/sounds.rss",
             webSiteUrl = "https://rebuild.fm",
-            episodes = listOf()
         ),
         onClick = {}
     )

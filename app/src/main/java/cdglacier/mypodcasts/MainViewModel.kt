@@ -68,6 +68,7 @@ class MainViewModel(
                     .filterNotNull()
                     .flatten()
                     .sortedBy { it.publishedAt }
+                    .reversed()
             }
 
             _latestEpisodes.value = subscribedEpisodes.getOrThrow()
