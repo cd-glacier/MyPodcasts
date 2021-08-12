@@ -5,8 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import cdglacier.mypodcasts.data.channel.Channel
+import cdglacier.mypodcasts.data.episode.Episode
 
-@Database(entities = [Channel::class], version = 1, exportSchema = false)
+@Database(entities = [Channel::class, Episode::class], version = 1, exportSchema = false)
 abstract class MyPodcastDatabase : RoomDatabase() {
     abstract val dao: MyPodcastDatabaseDao
 

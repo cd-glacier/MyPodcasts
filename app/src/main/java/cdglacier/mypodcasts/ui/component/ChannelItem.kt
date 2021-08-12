@@ -76,6 +76,7 @@ fun ChannelItem(
 fun ChannelItemPreview() {
     ChannelItem(
         Channel(
+            id = 1,
             domain = "rebuild.fm",
             name = "Rebuild",
             author = "Tatsuhiko Miyagawa",

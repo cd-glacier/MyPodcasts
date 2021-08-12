@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 
 val fakeChannels = listOf<Channel>(
     Channel(
+        id = 1,
         domain = "rebuild.fm",
         name = "Rebuild",
         author = "Tatsuhiko Miyagawa",
@@ -16,6 +17,7 @@ val fakeChannels = listOf<Channel>(
         webSiteUrl = "https://rebuild.fm",
     ),
     Channel(
+        id = 2,
         domain = "talkingkotlin.com",
         name = "Talking Kotlin",
         author = null,

@@ -25,7 +25,7 @@ class ChannelRepositoryImpl(
             notStoredChannels.forEach {
                 val channel = fetchChanel(it.newFeedsUrl).getOrThrow()
                 channel.id = it.id
-                database.updateChannel(channel)
+                database.upsertChannel(channel)
             }
 
             Result.success(database.getSubscribedChannels().map { it.translate() })
@@ -68,6 +68,7 @@ private fun List<AtomPerson>.join(): String? = if (this.isNotEmpty()) {
 
 private fun cdglacier.mypodcasts.data.channel.Channel.translate() =
     Channel(
+        id = requireNotNull(this.id),
         domain = this.domain ?: "",
         name = this.name ?: "",
         author = this.author,
