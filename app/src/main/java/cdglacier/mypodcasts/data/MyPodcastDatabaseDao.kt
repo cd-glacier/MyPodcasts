@@ -12,7 +12,7 @@ interface MyPodcastDatabaseDao {
     suspend fun getChannel(domain: String): Channel
 
     @Insert
-    suspend fun insertSubscribedChannel(channel: Channel)
+    suspend fun insertChannel(channel: Channel)
 
     @Update
     suspend fun updateChannel(channel: Channel)

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "channels")
 data class Channel(
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    var id: Int?,
 
     @ColumnInfo(name = "new_feed_url")
     val newFeedsUrl: String,

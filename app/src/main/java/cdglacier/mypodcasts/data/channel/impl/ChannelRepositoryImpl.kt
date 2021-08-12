@@ -23,8 +23,9 @@ class ChannelRepositoryImpl(
 
             val notStoredChannels = channels.filter { it.name == null }
             notStoredChannels.forEach {
-                val channel = fetchChanel(it.newFeedsUrl)
-                database.updateChannel(channel.getOrThrow())
+                val channel = fetchChanel(it.newFeedsUrl).getOrThrow()
+                channel.id = it.id
+                database.updateChannel(channel)
             }
 
             Result.success(database.getSubscribedChannels().map { it.translate() })
@@ -59,7 +60,11 @@ class ChannelRepositoryImpl(
         }
 }
 
-private fun List<AtomPerson>.join() = this.joinToString(", ")
+private fun List<AtomPerson>.join(): String? = if (this.isNotEmpty()) {
+    this.joinToString(", ")
+} else {
+    null
+}
 
 private fun cdglacier.mypodcasts.data.channel.Channel.translate() =
     Channel(
