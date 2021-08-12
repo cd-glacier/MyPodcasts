@@ -56,6 +56,7 @@ class MainViewModel(
         }
     }
 
+    // FIXME: refactoring not to sort here
     fun refetchLatestEpisodes() {
         viewModelScope.launch {
             val subscribedChannels = channelRepository.getSubscribedChannel()
