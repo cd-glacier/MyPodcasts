@@ -196,7 +196,8 @@ private fun MyPodcastsApp(
 
                 composable(MyPodcastsScreen.Setting.name) {
                     SettingScreen(
-                        subscribedChannels = subscribedChannels
+                        subscribedChannels = subscribedChannels,
+                        onAddChannel = { viewModel.addSubscribedChannel(it) }
                     )
                 }
             }

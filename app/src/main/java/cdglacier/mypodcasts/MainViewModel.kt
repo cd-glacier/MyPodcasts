@@ -82,6 +82,15 @@ class MainViewModel(
         }
     }
 
+    fun addSubscribedChannel(feedUrl: String) {
+        viewModelScope.launch {
+            channelRepository.addSubscribedChannel(feedUrl)
+
+            refetchSubscribedChannels()
+            refetchLatestEpisodes()
+        }
+    }
+
     fun fetchChannelDetail(domain: String) {
         viewModelScope.launch {
             val channel = channelRepository.getChannel(domain)

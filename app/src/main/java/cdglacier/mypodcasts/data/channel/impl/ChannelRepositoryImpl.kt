@@ -31,6 +31,14 @@ class ChannelRepositoryImpl(
             Result.success(database.getSubscribedChannels().map { it.translate() })
         }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun addSubscribedChannel(feedUrl: String): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            val channel = fetchChanel(feedUrl).getOrThrow()
+
+            Result.success(database.upsertChannel(channel))
+        }
+
     override suspend fun getChannel(domain: String): Result<Channel> =
         withContext(Dispatchers.IO) {
             Result.success(database.getChannel(domain).translate())

@@ -23,9 +23,9 @@ import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 
 @Composable
 fun SubscribedChannelSetting(
-    channels: List<Channel>
+    channels: List<Channel>,
+    onAddChannel: (String) -> Unit
 ) {
-    // TODO: replace room
     val (text, setText) = remember { mutableStateOf("") }
 
     Card(
@@ -52,7 +52,11 @@ fun SubscribedChannelSetting(
             SubscribedChannelContent(
                 channels = channels,
                 text = text,
-                onChange = setText
+                onChange = setText,
+                onAddChannel = {
+                    onAddChannel(text)
+                    setText("")
+                }
             )
         }
     }
@@ -62,15 +66,16 @@ fun SubscribedChannelSetting(
 fun SubscribedChannelContent(
     channels: List<Channel>,
     text: String,
-    onChange: (String) -> Unit
+    onChange: (String) -> Unit,
+    onAddChannel: (String) -> Unit
 ) {
-    Column(
-    ) {
+    Column {
         SubscribedChannelList(channels = channels)
 
         SubscribedChannelInputField(
             text = text,
-            onChange = onChange
+            onChange = onChange,
+            onAdd = onAddChannel,
         )
     }
 }
@@ -98,7 +103,8 @@ fun SubscribedChannelList(channels: List<Channel>) {
 @Composable
 fun SubscribedChannelInputField(
     text: String,
-    onChange: (String) -> Unit
+    onChange: (String) -> Unit,
+    onAdd: (String) -> Unit
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -110,6 +116,7 @@ fun SubscribedChannelInputField(
         TextField(
             value = text,
             onValueChange = onChange,
+            label = { Text(text = "Input RSS URL") },
             modifier = Modifier
                 .width(270.dp)
                 .constrainAs(inputRef) {
@@ -120,7 +127,7 @@ fun SubscribedChannelInputField(
         )
 
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { onAdd(text) },
             modifier = Modifier
                 .constrainAs(saveButtonRef) {
                     top.linkTo(parent.top)
@@ -128,7 +135,7 @@ fun SubscribedChannelInputField(
                     end.linkTo(parent.end)
                 }
         ) {
-            Text(text = "SAVE")
+            Text(text = "ADD")
         }
     }
 }
@@ -139,6 +146,7 @@ fun SubscribedChannelPreview() {
     MyPodcastsTheme {
         SubscribedChannelSetting(
             channels = fakeChannels,
+            onAddChannel = {}
         )
     }
 }

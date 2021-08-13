@@ -60,6 +60,11 @@ fun ChannelItem(
                 style = MaterialTheme.typography.subtitle1,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                modifier = if (isRemovable) {
+                    Modifier.width(200.dp)
+                } else {
+                    Modifier.width(250.dp)
+                }
             )
 
             channel.author?.let {
