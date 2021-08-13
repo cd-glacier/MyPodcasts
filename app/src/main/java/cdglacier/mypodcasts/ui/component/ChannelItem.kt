@@ -3,8 +3,12 @@ package cdglacier.mypodcasts.ui.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,7 +22,9 @@ import com.google.accompanist.coil.rememberCoilPainter
 @Composable
 fun ChannelItem(
     channel: Channel,
-    onClick: (Channel) -> Unit
+    onClick: (Channel) -> Unit,
+    isRemovable: Boolean = false,
+    removeButtonOnClick: (Channel) -> Unit = {},
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -26,7 +32,7 @@ fun ChannelItem(
             .fillMaxWidth()
             .padding(12.dp)
     ) {
-        val (imageRef, nameAndAuthorRef) = createRefs()
+        val (imageRef, nameAndAuthorRef, removeButtonRef) = createRefs()
 
         Image(
             painter = rememberCoilPainter(request = channel.imageUrl, fadeIn = true),
@@ -64,6 +70,24 @@ fun ChannelItem(
                     style = MaterialTheme.typography.caption,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+
+        if (isRemovable) {
+            IconButton(
+                onClick = { removeButtonOnClick(channel) },
+                modifier = Modifier
+                    .constrainAs(removeButtonRef) {
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end)
+                    }
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Delete,
+                    contentDescription = "remove button",
+                    modifier = Modifier.size(100.dp)
                 )
             }
 

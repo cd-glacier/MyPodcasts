@@ -79,7 +79,12 @@ fun SubscribedChannelContent(
 fun SubscribedChannelList(channels: List<Channel>) {
     LazyColumn {
         items(channels) {
-            ChannelItem(channel = it, onClick = {})
+            ChannelItem(
+                channel = it,
+                onClick = {},
+                isRemovable = true,
+                removeButtonOnClick = { /* TODO */ },
+            )
 
             Divider(
                 color = MaterialTheme.colors.background,
