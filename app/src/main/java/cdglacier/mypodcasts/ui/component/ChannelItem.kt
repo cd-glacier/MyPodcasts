@@ -22,9 +22,9 @@ fun ChannelItem(
 ) {
     ConstraintLayout(
         modifier = Modifier
+            .clickable { onClick(channel) }
             .fillMaxWidth()
             .padding(12.dp)
-            .clickable { onClick(channel) }
     ) {
         val (imageRef, nameAndAuthorRef) = createRefs()
 

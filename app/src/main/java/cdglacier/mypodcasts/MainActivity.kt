@@ -195,7 +195,9 @@ private fun MyPodcastsApp(
                 }
 
                 composable(MyPodcastsScreen.Setting.name) {
-                    SettingScreen()
+                    SettingScreen(
+                        subscribedChannels = subscribedChannels
+                    )
                 }
             }
         }

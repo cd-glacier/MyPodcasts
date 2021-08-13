@@ -4,6 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -13,10 +16,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import cdglacier.mypodcasts.data.channel.impl.fakeChannels
+import cdglacier.mypodcasts.model.Channel
+import cdglacier.mypodcasts.ui.component.ChannelItem
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 
 @Composable
-fun SubscribedChannelSetting() {
+fun SubscribedChannelSetting(
+    channels: List<Channel>
+) {
     // TODO: replace room
     val (text, setText) = remember { mutableStateOf("") }
 
@@ -42,6 +50,7 @@ fun SubscribedChannelSetting() {
             )
 
             SubscribedChannelContent(
+                channels = channels,
                 text = text,
                 onChange = setText
             )
@@ -51,22 +60,58 @@ fun SubscribedChannelSetting() {
 
 @Composable
 fun SubscribedChannelContent(
+    channels: List<Channel>,
+    text: String,
+    onChange: (String) -> Unit
+) {
+    Column(
+    ) {
+        SubscribedChannelList(channels = channels)
+
+        SubscribedChannelInputField(
+            text = text,
+            onChange = onChange
+        )
+    }
+}
+
+@Composable
+fun SubscribedChannelList(channels: List<Channel>) {
+    LazyColumn {
+        items(channels) {
+            ChannelItem(channel = it, onClick = {})
+
+            Divider(
+                color = MaterialTheme.colors.background,
+                thickness = 1.dp,
+                startIndent = 8.dp
+            )
+        }
+    }
+}
+
+@Composable
+fun SubscribedChannelInputField(
     text: String,
     onChange: (String) -> Unit
 ) {
     ConstraintLayout(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .padding(12.dp)
+            .fillMaxWidth(),
     ) {
         val (inputRef, saveButtonRef) = createRefs()
 
         TextField(
             value = text,
             onValueChange = onChange,
-            modifier = Modifier.constrainAs(inputRef) {
-                top.linkTo(parent.top)
-                bottom.linkTo(parent.bottom)
-                start.linkTo(parent.start)
-            }
+            modifier = Modifier
+                .width(270.dp)
+                .constrainAs(inputRef) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                }
         )
 
         Button(
@@ -75,7 +120,6 @@ fun SubscribedChannelContent(
                 .constrainAs(saveButtonRef) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
-                    start.linkTo(inputRef.end)
                     end.linkTo(parent.end)
                 }
         ) {
@@ -88,6 +132,8 @@ fun SubscribedChannelContent(
 @Composable
 fun SubscribedChannelPreview() {
     MyPodcastsTheme {
-        SubscribedChannelSetting()
+        SubscribedChannelSetting(
+            channels = fakeChannels,
+        )
     }
 }
