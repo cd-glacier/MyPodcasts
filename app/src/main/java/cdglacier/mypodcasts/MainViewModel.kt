@@ -56,53 +56,54 @@ class MainViewModel(
         }
     }
 
-    // FIXME: refactoring not to sort here
-    fun refetchLatestEpisodes() {
-        viewModelScope.launch {
-            val subscribedChannels = channelRepository.getSubscribedChannel()
-
-            val subscribedEpisodes = subscribedChannels.map { channels ->
-                channels
-                    .map {
-                        episodeRepository.getEpisodes(it).getOrNull()
-                    }
-                    .filterNotNull()
-                    .flatten()
-                    .sortedBy { it.publishedAt }
-                    .reversed()
-            }
-
-            _latestEpisodes.value = subscribedEpisodes.getOrThrow()
-        }
+    fun refresh() = viewModelScope.launch {
+        refetchSubscribedChannels()
+        findNewEpisodes()
+        refetchLatestEpisodes()
     }
 
-    fun refetchSubscribedChannels() =
+    private fun refetchLatestEpisodes() =
         viewModelScope.launch {
-            _subscribedChannels.value = channelRepository.getSubscribedChannel().getOrThrow()
+            val episodes = episodeRepository.getSubscribedEpisodes().getOrThrow()
+            _latestEpisodes.value = episodes
+        }
+
+    private fun findNewEpisodes() =
+        viewModelScope.launch {
+            channelRepository.storeSubscribedChannelFromWeb()
+            val channels = channelRepository.getSubscribedChannels().getOrThrow()
+            channels.forEach {
+                episodeRepository.storeNewEpisodes(it)
+            }
+        }
+
+    private fun refetchSubscribedChannels() =
+        viewModelScope.launch {
+            channelRepository.storeSubscribedChannelFromWeb()
+            _subscribedChannels.value = channelRepository.getSubscribedChannels().getOrThrow()
         }
 
     fun addSubscribedChannel(feedUrl: String) =
         viewModelScope.launch {
             channelRepository.addSubscribedChannel(feedUrl)
 
-            refetchSubscribedChannels()
-            refetchLatestEpisodes()
+            refresh()
         }
 
     fun removeSubscribedChannel(channel: Channel) =
         viewModelScope.launch {
             channelRepository.deleteSubscribedChannel(channel)
 
-            refetchSubscribedChannels()
-            refetchLatestEpisodes()
+            refresh()
         }
 
     fun fetchChannelDetail(domain: String) =
         viewModelScope.launch {
-            val channel = channelRepository.getChannel(domain)
-            val episodes = episodeRepository.getEpisodes(channel.getOrThrow())
+            val channel = channelRepository.getChannel(domain).getOrThrow()
+            episodeRepository.storeNewEpisodes(channel)
+            val episodes = episodeRepository.getEpisodes(channel)
 
-            _channelDetail = Pair(channel.getOrThrow(), episodes.getOrThrow())
+            _channelDetail = Pair(channel, episodes.getOrThrow())
         }
 
     fun fetchEpisodeDetail(domain: String, title: String) =

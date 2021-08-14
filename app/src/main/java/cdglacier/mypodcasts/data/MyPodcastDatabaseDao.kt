@@ -21,6 +21,9 @@ interface MyPodcastDatabaseDao {
     @Query("SELECT * fROM episodes WHERE channel_id = :channelId")
     suspend fun getEpisodes(channelId: Int): List<Episode>
 
+    @Query("SELECT * FROM episodes ORDER BY published_at DESC")
+    suspend fun getEpisodes(): List<Episode>
+
     @Query("SELECT * from episodes WHERE title = :title")
     suspend fun getEpisode(title: String): Episode
 

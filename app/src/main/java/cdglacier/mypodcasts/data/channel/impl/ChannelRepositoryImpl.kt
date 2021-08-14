@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import cdglacier.mypodcasts.data.MyPodcastDatabaseDao
 import cdglacier.mypodcasts.data.channel.ChannelRepository
-import cdglacier.mypodcasts.httpclient.HttpClient
 import cdglacier.mypodcasts.model.Channel
 import dev.stalla.PodcastRssParser
 import dev.stalla.model.atom.AtomPerson
@@ -14,10 +13,13 @@ import kotlinx.coroutines.withContext
 class ChannelRepositoryImpl(
     private val database: MyPodcastDatabaseDao,
 ) : ChannelRepository {
-    private val httpClient = HttpClient()
+    override suspend fun getSubscribedChannels(): Result<List<Channel>> =
+        withContext(Dispatchers.IO) {
+            Result.success(database.getSubscribedChannels().map { it.translate() })
+        }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun getSubscribedChannel(): Result<List<Channel>> =
+    override suspend fun storeSubscribedChannelFromWeb(): Result<Unit> =
         withContext(Dispatchers.IO) {
             val channels = database.getSubscribedChannels()
 
@@ -28,7 +30,7 @@ class ChannelRepositoryImpl(
                 database.upsertChannel(channel)
             }
 
-            Result.success(database.getSubscribedChannels().map { it.translate() })
+            Result.success(Unit)
         }
 
     @RequiresApi(Build.VERSION_CODES.O)

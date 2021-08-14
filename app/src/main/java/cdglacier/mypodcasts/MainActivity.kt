@@ -56,8 +56,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.refetchLatestEpisodes()
-        viewModel.refetchSubscribedChannels()
+        viewModel.refresh()
 
         setContent {
             MyPodcastsTheme {

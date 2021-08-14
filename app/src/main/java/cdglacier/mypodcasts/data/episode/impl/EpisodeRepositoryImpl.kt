@@ -14,15 +14,32 @@ import kotlinx.coroutines.withContext
 class EpisodeRepositoryImpl(
     private val database: MyPodcastDatabaseDao
 ) : EpisodeRepository {
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getEpisodes(channel: Channel): Result<List<Episode>> =
+        withContext(Dispatchers.IO) {
+            Result.success(database.getEpisodes(channel.id).map { it.translate(channel) })
+        }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override suspend fun storeNewEpisodes(channel: Channel): Result<Unit> =
         withContext(Dispatchers.IO) {
             val podcast = PodcastRssParser.parse(channel.newFeedsUrl)
             val episodeData = podcast?.episodes?.map { it.translate(channel.id) }
 
             episodeData?.forEach { database.upsertEpisode(it) }
 
-            Result.success(database.getEpisodes(channel.id).map { it.translate(channel) })
+            Result.success(Unit)
+        }
+
+    override suspend fun getSubscribedEpisodes(): Result<List<Episode>> =
+        withContext(Dispatchers.IO) {
+            val channels = database.getSubscribedChannels()
+
+            Result.success(database.getEpisodes().map { episode ->
+                episode.translate(
+                    channels.find { it.id == episode.channelId }!!
+                        .translate() //TODO: fix linear search
+                )
+            })
         }
 
     override suspend fun getEpisode(channel: Channel, title: String): Result<Episode> =
@@ -59,3 +76,15 @@ private fun cdglacier.mypodcasts.data.episode.Episode.translate(channel: Channel
         author = channel.author
     )
 )
+
+private fun cdglacier.mypodcasts.data.channel.Channel.translate() =
+    Channel(
+        id = requireNotNull(this.id),
+        domain = this.domain ?: "",
+        name = this.name ?: "",
+        author = this.author,
+        imageUrl = this.imageUrl,
+        description = this.description,
+        newFeedsUrl = this.newFeedsUrl,
+        webSiteUrl = this.webSiteUrl
+    )

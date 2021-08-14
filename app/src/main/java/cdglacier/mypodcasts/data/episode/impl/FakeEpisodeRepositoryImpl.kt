@@ -73,6 +73,14 @@ class FakeEpisodeRepositoryImpl : EpisodeRepository {
             }
         }
 
+    override suspend fun storeNewEpisodes(channel: Channel): Result<Unit> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getSubscribedEpisodes(): Result<List<Episode>> = Result.success(
+        fakeRebuildEpisodes
+    )
+
     override suspend fun getEpisode(channel: Channel, title: String): Result<Episode> =
         withContext(Dispatchers.IO) {
             if (channel.domain == "rebuild.fm" && title == "309: Museum of Unicode (kohsuke)") {

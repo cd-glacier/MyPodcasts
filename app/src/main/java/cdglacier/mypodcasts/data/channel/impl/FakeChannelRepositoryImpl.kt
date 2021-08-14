@@ -29,10 +29,11 @@ val fakeChannels = listOf<Channel>(
 )
 
 class FakeChannelRepositoryImpl : ChannelRepository {
-    override suspend fun getSubscribedChannel(): Result<List<Channel>> =
-        withContext(Dispatchers.IO) {
-            Result.success(fakeChannels)
-        }
+    override suspend fun getSubscribedChannels(): Result<List<Channel>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun storeSubscribedChannelFromWeb(): Result<Unit> = Result.success(Unit)
 
     override suspend fun addSubscribedChannel(feedUrl: String): Result<Unit> = Result.success(Unit)
 
