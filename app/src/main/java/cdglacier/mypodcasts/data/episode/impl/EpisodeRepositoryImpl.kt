@@ -34,11 +34,13 @@ class EpisodeRepositoryImpl(
         withContext(Dispatchers.IO) {
             val channels = database.getSubscribedChannels()
 
-            Result.success(database.getEpisodes().map { episode ->
-                episode.translate(
-                    channels.find { it.id == episode.channelId }!!
-                        .translate() //TODO: fix linear search
-                )
+            Result.success(database.getEpisodes().mapNotNull { episode ->
+                val channel = channels.find { it.id == episode.channelId }
+                if (channel == null) {
+                    null
+                } else {
+                    episode.translate(channel.translate())
+                }
             })
         }
 

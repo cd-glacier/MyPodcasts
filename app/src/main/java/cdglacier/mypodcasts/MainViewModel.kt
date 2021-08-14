@@ -56,7 +56,7 @@ class MainViewModel(
         }
     }
 
-    fun refresh() = viewModelScope.launch {
+    fun refresh() {
         refetchSubscribedChannels()
         findNewEpisodes()
         refetchLatestEpisodes()

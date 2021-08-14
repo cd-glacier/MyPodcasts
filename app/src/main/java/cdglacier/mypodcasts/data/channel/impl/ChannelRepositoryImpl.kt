@@ -62,7 +62,8 @@ class ChannelRepositoryImpl(
                 Result.success(
                     cdglacier.mypodcasts.data.channel.Channel(
                         id = null,
-                        domain = podcast.link.removePrefix("https://").removePrefix("http://"),
+                        domain = podcast.link.removePrefix("https://").removePrefix("http://")
+                            .removeSuffix("/"),
                         name = podcast.title,
                         author = podcast.atom?.authors?.join() ?: podcast.itunes?.author,
                         imageUrl = podcast.image?.url
