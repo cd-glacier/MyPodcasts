@@ -76,38 +76,42 @@ class MainViewModel(
         }
     }
 
-    fun refetchSubscribedChannels() {
+    fun refetchSubscribedChannels() =
         viewModelScope.launch {
             _subscribedChannels.value = channelRepository.getSubscribedChannel().getOrThrow()
         }
-    }
 
-    fun addSubscribedChannel(feedUrl: String) {
+    fun addSubscribedChannel(feedUrl: String) =
         viewModelScope.launch {
             channelRepository.addSubscribedChannel(feedUrl)
 
             refetchSubscribedChannels()
             refetchLatestEpisodes()
         }
-    }
 
-    fun fetchChannelDetail(domain: String) {
+    fun removeSubscribedChannel(channel: Channel) =
+        viewModelScope.launch {
+            channelRepository.deleteSubscribedChannel(channel)
+
+            refetchSubscribedChannels()
+            refetchLatestEpisodes()
+        }
+
+    fun fetchChannelDetail(domain: String) =
         viewModelScope.launch {
             val channel = channelRepository.getChannel(domain)
             val episodes = episodeRepository.getEpisodes(channel.getOrThrow())
 
             _channelDetail = Pair(channel.getOrThrow(), episodes.getOrThrow())
         }
-    }
 
-    fun fetchEpisodeDetail(domain: String, title: String) {
+    fun fetchEpisodeDetail(domain: String, title: String) =
         viewModelScope.launch {
             val channel = channelRepository.getChannel(domain)
             val episode = episodeRepository.getEpisode(channel.getOrThrow(), title)
 
             _episodeDetail = episode.getOrThrow()
         }
-    }
 
     fun invalidate() {
         _playingEpisode = null

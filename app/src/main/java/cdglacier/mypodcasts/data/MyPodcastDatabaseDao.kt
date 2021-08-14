@@ -26,4 +26,7 @@ interface MyPodcastDatabaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertEpisode(episode: Episode)
+
+    @Query("DELETE FROM episodes where channel_id = :channelId")
+    suspend fun deleteChannelEpisodes(channelId: Int)
 }

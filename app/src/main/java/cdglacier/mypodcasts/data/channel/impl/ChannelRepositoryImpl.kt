@@ -39,6 +39,14 @@ class ChannelRepositoryImpl(
             Result.success(database.upsertChannel(channel))
         }
 
+    override suspend fun deleteSubscribedChannel(channel: Channel): Result<Unit> =
+        withContext(Dispatchers.IO) {
+            database.deleteChannel(channel.translate())
+            database.deleteChannelEpisodes(channel.id)
+           
+            Result.success(Unit)
+        }
+
     override suspend fun getChannel(domain: String): Result<Channel> =
         withContext(Dispatchers.IO) {
             Result.success(database.getChannel(domain).translate())
@@ -85,3 +93,14 @@ private fun cdglacier.mypodcasts.data.channel.Channel.translate() =
         newFeedsUrl = this.newFeedsUrl,
         webSiteUrl = this.webSiteUrl
     )
+
+private fun Channel.translate() = cdglacier.mypodcasts.data.channel.Channel(
+    id = this.id,
+    domain = this.domain,
+    name = this.name,
+    author = this.author,
+    imageUrl = this.imageUrl,
+    description = this.description,
+    newFeedsUrl = this.newFeedsUrl,
+    webSiteUrl = this.webSiteUrl
+)

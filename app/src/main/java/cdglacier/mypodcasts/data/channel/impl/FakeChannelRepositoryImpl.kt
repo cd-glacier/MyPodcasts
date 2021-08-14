@@ -36,6 +36,9 @@ class FakeChannelRepositoryImpl : ChannelRepository {
 
     override suspend fun addSubscribedChannel(feedUrl: String): Result<Unit> = Result.success(Unit)
 
+    override suspend fun deleteSubscribedChannel(channel: Channel): Result<Unit> =
+        Result.success(Unit)
+
     override suspend fun getChannel(domain: String): Result<Channel> =
         withContext(Dispatchers.IO) {
             val channel = fakeChannels.find { it.domain == domain }

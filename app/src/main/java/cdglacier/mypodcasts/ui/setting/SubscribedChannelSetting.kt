@@ -24,7 +24,8 @@ import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 @Composable
 fun SubscribedChannelSetting(
     channels: List<Channel>,
-    onAddChannel: (String) -> Unit
+    onAddChannel: (String) -> Unit,
+    onRemoveChannel: (channel: Channel) -> Unit
 ) {
     val (text, setText) = remember { mutableStateOf("") }
 
@@ -56,7 +57,8 @@ fun SubscribedChannelSetting(
                 onAddChannel = {
                     onAddChannel(text)
                     setText("")
-                }
+                },
+                removeButtonOnClick = onRemoveChannel
             )
         }
     }
@@ -67,10 +69,14 @@ fun SubscribedChannelContent(
     channels: List<Channel>,
     text: String,
     onChange: (String) -> Unit,
-    onAddChannel: (String) -> Unit
+    onAddChannel: (String) -> Unit,
+    removeButtonOnClick: (channel: Channel) -> Unit
 ) {
     Column {
-        SubscribedChannelList(channels = channels)
+        SubscribedChannelList(
+            channels = channels,
+            removeButtonOnClick = removeButtonOnClick
+        )
 
         SubscribedChannelInputField(
             text = text,
@@ -81,14 +87,17 @@ fun SubscribedChannelContent(
 }
 
 @Composable
-fun SubscribedChannelList(channels: List<Channel>) {
+fun SubscribedChannelList(
+    channels: List<Channel>,
+    removeButtonOnClick: (channel: Channel) -> Unit
+) {
     LazyColumn {
-        items(channels) {
+        items(channels) { it ->
             ChannelItem(
                 channel = it,
                 onClick = {},
                 isRemovable = true,
-                removeButtonOnClick = { /* TODO */ },
+                removeButtonOnClick = { removeButtonOnClick(it) },
             )
 
             Divider(
@@ -146,7 +155,8 @@ fun SubscribedChannelPreview() {
     MyPodcastsTheme {
         SubscribedChannelSetting(
             channels = fakeChannels,
-            onAddChannel = {}
+            onAddChannel = {},
+            onRemoveChannel = {}
         )
     }
 }

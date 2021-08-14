@@ -10,13 +10,15 @@ import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 @Composable
 fun SettingScreen(
     subscribedChannels: List<Channel>?,
-    onAddChannel: (String) -> Unit
+    onAddChannel: (String) -> Unit,
+    onRemoveChannel: (channel: Channel) -> Unit
 ) {
     subscribedChannels?.let {
         Column {
             SubscribedChannelSetting(
                 channels = it,
-                onAddChannel = onAddChannel
+                onAddChannel = onAddChannel,
+                onRemoveChannel = onRemoveChannel
             )
         }
     }
@@ -28,7 +30,8 @@ fun SettingScreenPreview() {
     MyPodcastsTheme() {
         SettingScreen(
             subscribedChannels = fakeChannels,
-            onAddChannel = {}
+            onAddChannel = {},
+            onRemoveChannel = {}
         )
     }
 }
