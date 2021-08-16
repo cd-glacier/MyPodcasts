@@ -56,19 +56,13 @@ class MainViewModel(
         }
     }
 
-    fun refresh() {
-        refetchSubscribedChannels()
-        findNewEpisodes()
-        refetchLatestEpisodes()
-    }
-
-    private fun refetchLatestEpisodes() =
+    fun refetchLatestEpisodes() =
         viewModelScope.launch {
             val episodes = episodeRepository.getSubscribedEpisodes().getOrThrow()
             _latestEpisodes.value = episodes
         }
 
-    private fun findNewEpisodes() =
+    fun findNewEpisodes() =
         viewModelScope.launch {
             channelRepository.storeSubscribedChannelFromWeb()
             val channels = channelRepository.getSubscribedChannels().getOrThrow()
@@ -77,7 +71,7 @@ class MainViewModel(
             }
         }
 
-    private fun refetchSubscribedChannels() =
+    fun refetchSubscribedChannels() =
         viewModelScope.launch {
             channelRepository.storeSubscribedChannelFromWeb()
             _subscribedChannels.value = channelRepository.getSubscribedChannels().getOrThrow()
@@ -87,14 +81,17 @@ class MainViewModel(
         viewModelScope.launch {
             channelRepository.addSubscribedChannel(feedUrl)
 
-            refresh()
+            refetchSubscribedChannels()
+            findNewEpisodes()
+            refetchLatestEpisodes()
         }
 
     fun removeSubscribedChannel(channel: Channel) =
         viewModelScope.launch {
             channelRepository.deleteSubscribedChannel(channel)
 
-            refresh()
+            refetchSubscribedChannels()
+            refetchLatestEpisodes()
         }
 
     fun fetchChannelDetail(domain: String) =
