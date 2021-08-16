@@ -17,7 +17,8 @@ fun HomeScreen(
         episodes = latestEpisodes,
         itemOnClick = episodeItemOnClick,
         playButtonOnClick = playButtonOnClick,
-        titleOnClick = titleOnClick
+        titleOnClick = titleOnClick,
+        loadMoreOnClick = { /* TODO */ }
     )
 }
 

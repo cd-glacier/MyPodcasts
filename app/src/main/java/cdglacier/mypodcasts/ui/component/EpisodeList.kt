@@ -4,8 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -16,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cdglacier.mypodcasts.data.episode.impl.fakeRebuildEpisodes
+import cdglacier.mypodcasts.data.episode.impl.fakeTalkingKotlinEpisodes
 import cdglacier.mypodcasts.model.Episode
 import cdglacier.mypodcasts.ui.theme.MyPodcastsTheme
 
@@ -39,10 +38,12 @@ fun LoadingEpisodeList() {
 @Composable
 fun EpisodeList(
     episodes: List<Episode>?,
+    limit: Int = 5,
     visibleImage: Boolean = true,
     itemOnClick: (Episode) -> Unit,
     playButtonOnClick: (Episode) -> Unit,
-    titleOnClick: (Episode.Channel) -> Unit
+    titleOnClick: (Episode.Channel) -> Unit,
+    loadMoreOnClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -73,8 +74,8 @@ fun EpisodeList(
                     Text("empty")
                 }
                 else -> {
-                    LazyColumn {
-                        items(episodes) {
+                    Column {
+                        episodes.take(limit).forEach {
                             EpisodeItem(
                                 episode = it,
                                 visibleImage = visibleImage,
@@ -86,6 +87,12 @@ fun EpisodeList(
                                 color = MaterialTheme.colors.background,
                                 thickness = 1.dp,
                                 startIndent = 8.dp
+                            )
+                        }
+
+                        if (episodes.size > limit) {
+                            LoadMoreButton(
+                                onClick = loadMoreOnClick
                             )
                         }
                     }
@@ -100,10 +107,12 @@ fun EpisodeList(
 fun EpisodeListPreview() {
     MyPodcastsTheme(darkTheme = true) {
         EpisodeList(
-            episodes = fakeRebuildEpisodes,
+            episodes = fakeRebuildEpisodes + fakeTalkingKotlinEpisodes,
+            limit = 1,
             itemOnClick = {},
             playButtonOnClick = {},
-            titleOnClick = {}
+            titleOnClick = {},
+            loadMoreOnClick = {}
         )
     }
 }

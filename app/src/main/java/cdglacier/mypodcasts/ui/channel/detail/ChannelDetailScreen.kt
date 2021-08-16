@@ -1,7 +1,9 @@
 package cdglacier.mypodcasts.ui.channel.detail
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
 import cdglacier.mypodcasts.data.channel.impl.fakeChannels
 import cdglacier.mypodcasts.data.episode.impl.fakeRebuildEpisodes
@@ -17,16 +19,24 @@ fun ChannelDetailScreen(
     episodeItemOnClick: (Episode) -> Unit,
     playButtonOnClick: (Episode) -> Unit,
 ) {
-    Column {
-        ChannelDetail(channel = channel)
+    val (episodeLimit, setEpisodeLimit) = remember { mutableStateOf(5) }
 
-        EpisodeList(
-            episodes = episodes,
-            visibleImage = false,
-            itemOnClick = episodeItemOnClick,
-            playButtonOnClick = playButtonOnClick,
-            titleOnClick = {}
-        )
+    LazyColumn {
+        item {
+            ChannelDetail(channel = channel)
+        }
+
+        item {
+            EpisodeList(
+                episodes = episodes,
+                visibleImage = false,
+                itemOnClick = episodeItemOnClick,
+                playButtonOnClick = playButtonOnClick,
+                titleOnClick = {},
+                limit = episodeLimit,
+                loadMoreOnClick = { setEpisodeLimit(episodeLimit + 5) }
+            )
+        }
     }
 }
 
