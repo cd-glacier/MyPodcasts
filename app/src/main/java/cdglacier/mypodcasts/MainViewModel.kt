@@ -58,17 +58,14 @@ class MainViewModel(
 
     fun refetchLatestEpisodes() =
         viewModelScope.launch {
-            val episodes = episodeRepository.getSubscribedEpisodes().getOrThrow()
-            _latestEpisodes.value = episodes
-        }
-
-    fun findNewEpisodes() =
-        viewModelScope.launch {
             channelRepository.storeSubscribedChannelFromWeb()
             val channels = channelRepository.getSubscribedChannels().getOrThrow()
             channels.forEach {
                 episodeRepository.storeNewEpisodes(it)
             }
+
+            val episodes = episodeRepository.getSubscribedEpisodes().getOrThrow()
+            _latestEpisodes.value = episodes
         }
 
     fun refetchSubscribedChannels() =
@@ -82,7 +79,6 @@ class MainViewModel(
             channelRepository.addSubscribedChannel(feedUrl)
 
             refetchSubscribedChannels()
-            findNewEpisodes()
             refetchLatestEpisodes()
         }
 
